@@ -1,0 +1,389 @@
+{
+  "hero": {
+    "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80"
+  },
+  "social": {
+    "instagram": {
+      "label": "@starclassargentina",
+      "url": "https://www.instagram.com/star_class_argentina/"
+    }
+  },
+  "events": [
+    {
+      "title": "Apertura Clase Star",
+      "type": "Regata local",
+      "club": "Yacht Club Argentino",
+      "location": "Dársena Norte",
+      "start": "2026-05-16",
+      "end": "2026-05-17"
+    },
+    {
+      "title": "Campeonato Metropolitano",
+      "type": "Campeonato",
+      "club": "Club Náutico Olivos",
+      "location": "Río de la Plata",
+      "start": "2026-06-13",
+      "end": "2026-06-14"
+    },
+    {
+      "title": "Copa Invierno",
+      "type": "Regata puntuable",
+      "club": "Club Náutico San Isidro",
+      "location": "San Isidro",
+      "start": "2026-07-11",
+      "end": "2026-07-12"
+    },
+    {
+      "title": "Campeonato Argentino Star",
+      "type": "Campeonato nacional",
+      "club": "Yacht Club Olivos",
+      "location": "Olivos",
+      "start": "2026-09-18",
+      "end": "2026-09-21",
+      "link": "https://cnsi.org.ar/sanisidrolabrador/"
+    }
+  ],
+  "championships": [
+    {
+      "name": "Copa Primavera 2025",
+      "date": "Noviembre 2025",
+      "location": "San Isidro",
+      "summary": "Campeonato de cierre con siete pruebas completadas.",
+      "results": [
+        {
+          "position": 1,
+          "boat": "442367",
+          "helm": "Diego Peisajovich",
+          "crew": "El Oso",
+          "score": 9
+        },
+        {
+          "position": 2,
+          "boat": "260405",
+          "helm": "Manuel Peisajovich",
+          "crew": "Pirata",
+          "score": 7
+        }
+      ],
+      "startDate": "2025-11-15",
+      "endDate": "2025-11-16",
+      "raceDates": [
+        "2025-11-15",
+        "2025-11-16"
+      ]
+    },
+    {
+      "name": "Campeonato Apertura 2026",
+      "date": "Abril 2026",
+      "location": "Buenos Aires",
+      "summary": "Una serie pareja, con viento medio del sudeste y definición en la última prueba.",
+      "results": [
+        {
+          "position": 1,
+          "boat": "ARG 8512",
+          "helm": "Martin Silva",
+          "crew": "Tomás Ruiz",
+          "score": 7
+        },
+        {
+          "position": 2,
+          "boat": "ARG 8460",
+          "helm": "Federico Lagos",
+          "crew": "Nicolás Vera",
+          "score": 14
+        },
+        {
+          "position": 3,
+          "boat": "ARG 8398",
+          "helm": "Santiago Costa",
+          "crew": "Juan Molina",
+          "score": 18
+        },
+        {
+          "position": 4,
+          "boat": "ARG 8321",
+          "helm": "Diego Paredes",
+          "crew": "Lucas Ferrer",
+          "score": 24
+        }
+      ],
+      "startDate": "2026-04-05",
+      "endDate": "2026-04-06",
+      "raceDates": [
+        "2026-04-05",
+        "2026-04-06"
+      ]
+    },
+    {
+      "name": "San Isidro Labrador ",
+      "date": "Abril 2026",
+      "location": "CNSI",
+      "summary": "Series Summary del campeonato San Isidro Labrador 2026.",
+      "photoFolder": "San isidro labrador/Fotos SIL",
+      "photos": [
+        "/uploads/flo-7684-copia-1777586506637.jpg",
+        "/uploads/flo-7685-copia-1777586506644.jpg",
+        "/uploads/flo-7739-copia-1777586506652.jpg",
+        "/uploads/flo-7740-copia-1777586506660.jpg",
+        "/uploads/flo-7748-copia-1777586506665.jpg",
+        "/uploads/flo-7832-copia-1777586506707.jpg",
+        "/uploads/flo-8049-copia-1777586506711.jpg"
+      ],
+      "results": [
+        {
+          "position": 1,
+          "boat": "8453",
+          "helm": "Leandro Altolaguirre",
+          "crew": "Lucas Altolaguirre",
+          "score": 12,
+          "races": [
+            "13",
+            "2",
+            "1",
+            "9"
+          ]
+        },
+        {
+          "position": 2,
+          "boat": "8156",
+          "helm": "Hector Longarela",
+          "crew": "Hugo Longarela",
+          "score": 30
+        },
+        {
+          "position": 3,
+          "boat": "8265",
+          "helm": "Lucas Mones Ruiz",
+          "crew": "Paolo Farruko Perrino",
+          "score": 38
+        },
+        {
+          "position": 4,
+          "boat": "8505",
+          "helm": "Fabian Mac Gowan",
+          "crew": "Nicolas Rosas",
+          "score": 38
+        },
+        {
+          "position": 5,
+          "boat": "8393",
+          "helm": "Martin Ferrero",
+          "crew": "Javier Siro",
+          "score": 44
+        },
+        {
+          "position": 6,
+          "boat": "8003",
+          "helm": "Daniel Della Torre",
+          "crew": "Nicolas Bartolucci",
+          "score": 46
+        },
+        {
+          "position": 7,
+          "boat": "8583",
+          "helm": "Diego Peisajovich",
+          "crew": "Fernando Demilio",
+          "score": 47
+        },
+        {
+          "position": 8,
+          "boat": "8551",
+          "helm": "Roberto Di Bernardo",
+          "crew": "Felipe Caivano",
+          "score": 48
+        },
+        {
+          "position": 9,
+          "boat": "8061",
+          "helm": "Fabio Scarpati",
+          "crew": "Silvina Otada",
+          "score": 63
+        },
+        {
+          "position": 10,
+          "boat": "8608",
+          "helm": "Alberto Zanetti",
+          "crew": "Julia Gazari Barroso",
+          "score": 68
+        },
+        {
+          "position": 11,
+          "boat": "505",
+          "helm": "Facundo Mac Gowan",
+          "crew": "Tomas Fioritti",
+          "score": 70
+        },
+        {
+          "position": 12,
+          "boat": "8491",
+          "helm": "Nicolas Guzman",
+          "crew": "Gonzalo Celedoni",
+          "score": 74
+        },
+        {
+          "position": 13,
+          "boat": "8283",
+          "helm": "Gerardo Della Torre",
+          "crew": "Julio Felipe Berger",
+          "score": 75
+        },
+        {
+          "position": 14,
+          "boat": "8500",
+          "helm": "Hernan Monez Ruiz",
+          "crew": "",
+          "score": 0,
+          "races": [
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "position": 15,
+          "boat": "8239",
+          "helm": "Federico Calegari",
+          "crew": "Marcelo Tufarolo",
+          "score": 85
+        },
+        {
+          "position": 16,
+          "boat": "8565",
+          "helm": "Juan Martin Locatelli",
+          "crew": "Gustavo Economopulos",
+          "score": 100
+        },
+        {
+          "position": 17,
+          "boat": "8008",
+          "helm": "Erich Mones",
+          "crew": "Santiago Toker",
+          "score": 101
+        },
+        {
+          "position": 18,
+          "boat": "8251",
+          "helm": "Mariano Cambon",
+          "crew": "Martin Costa",
+          "score": 114
+        },
+        {
+          "position": 19,
+          "boat": "7736",
+          "helm": "Gonzalo Berdes",
+          "crew": "Joaquin Berdes",
+          "score": 128
+        },
+        {
+          "position": 20,
+          "boat": "8278",
+          "helm": "Nicolas Cafaro",
+          "crew": "Santiago Gonzalez Otharan",
+          "score": 128
+        },
+        {
+          "position": 21,
+          "boat": "7534",
+          "helm": "Guillermo Calegari",
+          "crew": "Andres Villar",
+          "score": 150
+        },
+        {
+          "position": 22,
+          "boat": "2604",
+          "helm": "Manuel Peisajovich ",
+          "crew": "Juli ",
+          "score": 46,
+          "races": [
+            "2",
+            " 22",
+            "22",
+            "22"
+          ]
+        }
+      ],
+      "startDate": "2026-04-11",
+      "endDate": "2026-04-19",
+      "raceDates": [
+        "2026-04-11",
+        "2026-04-12",
+        "2026-04-18",
+        "2026-04-19"
+      ],
+      "raceCount": 4,
+      "discardCount": 1
+    }
+  ],
+  "generalRanking": [
+    {
+      "position": 1,
+      "boat": "ARG 8321",
+      "helm": "Diego Paredes",
+      "crew": "Lucas Ferrer",
+      "points": 27
+    },
+    {
+      "position": 2,
+      "boat": "ARG 8398",
+      "helm": "Santiago Costa",
+      "crew": "Juan Molina",
+      "points": 31
+    },
+    {
+      "position": 3,
+      "boat": "ARG 8460",
+      "helm": "Federico Lagos",
+      "crew": "Nicolás Vera",
+      "points": 38
+    },
+    {
+      "position": 4,
+      "boat": "ARG 8512",
+      "helm": "Martín Silva",
+      "crew": "Tomás Ruiz",
+      "points": 42
+    }
+  ],
+  "dues": [
+    {
+      "boat": "ARG 8512",
+      "owner": "Martín Silva",
+      "status": "Pago"
+    },
+    {
+      "boat": "ARG 8460",
+      "owner": "Federico Lagos",
+      "status": "Pago"
+    },
+    {
+      "boat": "ARG 8398",
+      "owner": "Santiago Costa",
+      "status": "Pendiente"
+    },
+    {
+      "boat": "ARG 8321",
+      "owner": "Diego Paredes",
+      "status": "Pago"
+    }
+  ],
+  "gallery": [
+    {
+      "title": "Flota en regata",
+      "caption": "Fotos originales servidas sin compresión.",
+      "image": "/uploads/flo-8042-copia-1777585686571.jpg"
+    },
+    {
+      "title": "Jornada de campeonato",
+      "caption": "Archivo visual San Isidro Labrador.",
+      "image": "/uploads/flo-7643-copia-1777585679723.jpg"
+    },
+    {
+      "title": "Star en Tierra",
+      "caption": "Preparandose para salir al SIL",
+      "image": "/uploads/flo-7700-copia-1777585439963.jpg"
+    }
+  ],
+  "copyright": "2026 StarClass todos los derechos reservados",
+  "generalRankingMode": "auto"
+}
