@@ -10,6 +10,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check R2 secrets
+        run: |
+          missing=0
+          if [ -z "${{ secrets.R2_ACCOUNT_ID }}" ]; then echo "R2_ACCOUNT_ID is MISSING"; missing=1; else echo "R2_ACCOUNT_ID is set"; fi
+          if [ -z "${{ secrets.R2_ACCESS_KEY_ID }}" ]; then echo "R2_ACCESS_KEY_ID is MISSING"; missing=1; else echo "R2_ACCESS_KEY_ID is set"; fi
+          if [ -z "${{ secrets.R2_SECRET_ACCESS_KEY }}" ]; then echo "R2_SECRET_ACCESS_KEY is MISSING"; missing=1; else echo "R2_SECRET_ACCESS_KEY is set"; fi
+          if [ -z "${{ secrets.R2_BUCKET_NAME }}" ] && [ -z "${{ secrets.R2_BUCKET }}" ]; then echo "R2_BUCKET_NAME (or R2_BUCKET) is MISSING"; missing=1; else echo "R2_BUCKET_NAME is set"; fi
+          if [ -z "${{ secrets.R2_PUBLIC_URL }}" ]; then echo "R2_PUBLIC_URL is MISSING"; missing=1; else echo "R2_PUBLIC_URL is set"; fi
+          if [ "$missing" -ne 0 ]; then echo "One or more R2 secrets are missing. Add them in Settings → Secrets → Actions."; exit 2; fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -22,5 +32,6 @@ jobs:
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
           R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
