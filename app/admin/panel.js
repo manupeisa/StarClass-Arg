@@ -148,6 +148,76 @@ async function postImageFile(file) {
   return body;
 }
 
+export default function AdminPanel({ initialData }) {
+  const [data, setData] = useState(initialData);
+  const [championshipIndex, setChampionshipIndex] = useState(0);
+  const [message, setMessage] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [generalValidationError, setGeneralValidationError] = useState("");
+  const [editingIndex, setEditingIndex] = useState(null);
+
+  const championship = data.championships[championshipIndex] || data.championships[0];
+  const championshipColumns = useMemo(
+    () => buildChampionshipColumns([...data.championships].sort((a, b) => championshipTime(a) - championshipTime(b))),
+    [data.championships],
+  );
+  const { rows: generalRankingRows } = useMemo(
+    () => buildGeneralRankingData(data.championships),
+    [data.championships],
+  );
+  const generalMode = data.generalRankingMode || "auto";
+
+  const paidSummary = useMemo(() => {
+    const paid = data.dues.filter((dues) => dues.status === "Pago").length;
+    return `${paid}/${data.dues.length} pagos`;
+  }, [data.dues]);
+
+  const invalidManualIndexes = useMemo(() => {
+    const rows = data.generalRanking || [];
+    const idxSet = new Set();
+    if (!rows.length) return idxSet;
+
+    const mapped = rows.map((r) => ({ position: Number(r.position) || 0, points: Number(r.points ?? (r.points === 0 ? r.points : NaN)) }));
+    const sorted = [...mapped].sort((a, b) => a.position - b.position);
+    const positionToIndex = new Map();
+    rows.forEach((r, i) => positionToIndex.set(Number(r.position) || i + 1, i));
+
+    for (let i = 0; i < sorted.length - 1; i++) {
+      const cur = sorted[i];
+      const next = sorted[i + 1];
+      if (Number.isNaN(cur.points) || Number.isNaN(next.points)) continue;
+      if (!(cur.points < next.points)) {
+        const curIdx = positionToIndex.get(cur.position) ?? i;
+        const nextIdx = positionToIndex.get(next.position) ?? i + 1;
+        idxSet.add(curIdx);
+        idxSet.add(nextIdx);
+      }
+    }
+
+    return idxSet;
+  }, [data.generalRanking]);
+
+  function patchData(patch) {
+    setData((current) => ({ ...current, ...patch }));
+  }
+
+  function patchChampionship(patch) {
+    setData((current) => ({
+      ...current,
+      championships: updateArrayItem(current.championships, championshipIndex, patch),
+    }));
+  }
+
+  function patchHero(patch) {
+    setData((current) => ({
+      ...current,
+      hero: {
+        ...(current.hero || {}),
+        ...(patch.images ? { images: normalizeHeroImages(patch.images) } : patch),
+      },
+    }));
+  }
+
   async function uploadHeroImage(file) {
     if (!file) return;
 
@@ -217,76 +287,6 @@ async function postImageFile(file) {
     const nextData = { ...data, hero: { ...(data.hero || {}), images: nextHeroImages } };
     setData(nextData);
     await saveData(nextData);
-  }
-
-export default function AdminPanel({ initialData }) {
-  const [data, setData] = useState(initialData);
-  const [championshipIndex, setChampionshipIndex] = useState(0);
-  const [message, setMessage] = useState("");
-  const [saving, setSaving] = useState(false);
-  const [generalValidationError, setGeneralValidationError] = useState("");
-  const [editingIndex, setEditingIndex] = useState(null);
-
-  const championship = data.championships[championshipIndex] || data.championships[0];
-  const championshipColumns = useMemo(
-    () => buildChampionshipColumns([...data.championships].sort((a, b) => championshipTime(a) - championshipTime(b))),
-    [data.championships],
-  );
-  const { rows: generalRankingRows } = useMemo(
-    () => buildGeneralRankingData(data.championships),
-    [data.championships],
-  );
-  const generalMode = data.generalRankingMode || "auto";
-
-  const paidSummary = useMemo(() => {
-    const paid = data.dues.filter((dues) => dues.status === "Pago").length;
-    return `${paid}/${data.dues.length} pagos`;
-  }, [data.dues]);
-
-  const invalidManualIndexes = useMemo(() => {
-    const rows = data.generalRanking || [];
-    const idxSet = new Set();
-    if (!rows.length) return idxSet;
-
-    const mapped = rows.map((r) => ({ position: Number(r.position) || 0, points: Number(r.points ?? (r.points === 0 ? r.points : NaN)) }));
-    const sorted = [...mapped].sort((a, b) => a.position - b.position);
-    const positionToIndex = new Map();
-    rows.forEach((r, i) => positionToIndex.set(Number(r.position) || i + 1, i));
-
-    for (let i = 0; i < sorted.length - 1; i++) {
-      const cur = sorted[i];
-      const next = sorted[i + 1];
-      if (Number.isNaN(cur.points) || Number.isNaN(next.points)) continue;
-      if (!(cur.points < next.points)) {
-        const curIdx = positionToIndex.get(cur.position) ?? i;
-        const nextIdx = positionToIndex.get(next.position) ?? i + 1;
-        idxSet.add(curIdx);
-        idxSet.add(nextIdx);
-      }
-    }
-
-    return idxSet;
-  }, [data.generalRanking]);
-
-  function patchData(patch) {
-    setData((current) => ({ ...current, ...patch }));
-  }
-
-  function patchChampionship(patch) {
-    setData((current) => ({
-      ...current,
-      championships: updateArrayItem(current.championships, championshipIndex, patch),
-    }));
-  }
-
-  function patchHero(patch) {
-    setData((current) => ({
-      ...current,
-      hero: {
-        ...(current.hero || {}),
-        ...(patch.images ? { images: normalizeHeroImages(patch.images) } : patch),
-      },
-    }));
   }
 
   function patchResult(index, patch) {
