@@ -127,6 +127,7 @@ function getEventTypeClass(type) {
 
 function EventCard({ event }) {
   const className = `event-card ${getEventTypeClass(event.type)}${event.link ? " event-card-link" : ""}`;
+  const hasLink = Boolean(event.link);
   const content = (
     <>
       <div className="event-date">
@@ -137,6 +138,7 @@ function EventCard({ event }) {
         <p>{event.type}</p>
         <h3>{event.title}</h3>
         <span>{event.club}{" · "}{event.location}</span>
+        {hasLink ? <span className="event-register-link">Inscribirse</span> : null}
       </div>
     </>
   );

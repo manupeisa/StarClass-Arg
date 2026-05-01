@@ -403,6 +403,18 @@ img {
   color: var(--muted);
 }
 
+.event-card .event-register-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #d6a11f;
+}
+
+.event-card-link:hover .event-register-link {
+  color: #f0c94a;
+}
+
 .split {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.6fr);
