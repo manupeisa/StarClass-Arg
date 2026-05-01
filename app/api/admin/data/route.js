@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { isAdminSession } from "../../../../lib/admin-auth";
 import { readStarclassData, writeStarclassData } from "../../../../lib/starclass-data";
 
@@ -19,5 +20,11 @@ export async function PUT(request) {
 
   const data = await request.json();
   await writeStarclassData(data);
+  
+  // Invalidate cache for pages that depend on starclass.json
+  revalidatePath("/");
+  revalidatePath("/campeonatos");
+  revalidatePath("/posicionamiento");
+
   return NextResponse.json({ ok: true });
 }
