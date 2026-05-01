@@ -3,6 +3,7 @@ const nextConfig = {
   experimental: {
     outputFileTracingExcludes: {
       "*": [
+        ".git/**/*",
         "Imagenes/**/*",
         "San isidro labrador/**/*",
         "public/uploads/**/*",
