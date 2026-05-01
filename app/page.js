@@ -13,7 +13,7 @@ import { readStarclassData } from "../lib/starclass-data";
 import {
   buildGeneralRankingData,
 } from "../lib/general-ranking";
-import { listHeroImages, listSanIsidroPhotos } from "../lib/hero-images";
+import { listHeroImages } from "../lib/hero-images";
 import { championshipSlug } from "../lib/slug";
 import HeroCarousel from "../components/ui/hero-carousel";
 import NavHeader from "../components/ui/nav-header";
@@ -172,7 +172,6 @@ export default async function Home() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const folderImages = await listHeroImages();
-  const sanIsidroPhotos = await listSanIsidroPhotos();
   const sortedChampionships = [...data.championships].sort((a, b) => getComparableDate(a) - getComparableDate(b));
   const futureChampionships = data.championships.filter((championship) => {
     return isUpcomingCompetition(championship, today);
@@ -196,9 +195,12 @@ export default async function Home() {
       return isUpcomingCompetition(event, today);
     })
     .sort((a, b) => getComparableDate(a, "start") - getComparableDate(b, "start"));
-  const heroImages = folderImages.length
-    ? folderImages
-    : [data.hero.image, ...data.gallery.map((item) => item.image)];
+  const heroImages =
+    (data.hero?.images || []).filter(Boolean).length
+      ? [...new Set((data.hero.images || []).filter(Boolean))]
+      : folderImages.length
+        ? folderImages
+        : [data.hero.image, ...data.gallery.map((item) => item.image)].filter(Boolean);
   const { rows: generalRankingRows } = buildGeneralRankingData(data.championships);
   const visualGallery = data.gallery;
 
