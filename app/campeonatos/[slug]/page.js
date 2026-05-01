@@ -1,9 +1,10 @@
-import { ArrowLeft, CalendarDays, MapPin, Trophy } from "lucide-react";
+﻿import { ArrowLeft, CalendarDays, MapPin, Trophy } from "lucide-react";
 import { notFound } from "next/navigation";
 import { listPhotosFromFolder } from "../../../lib/hero-images";
 import { getChampionshipResultScore } from "../../../lib/general-ranking";
 import { championshipSlug } from "../../../lib/slug";
 import { readStarclassData } from "../../../lib/starclass-data";
+import HeroCarousel from "../../../components/ui/hero-carousel";
 
 export const dynamic = "force-dynamic";
 
@@ -48,16 +49,6 @@ function formatRaceDates(item) {
 }
 
 function RankingTable({ rows, raceDates = [], raceCount = 0, discardCount = 0 }) {
-  function formatRaceLabel(date, index) {
-    if (!date) return `R${index + 1}`;
-    try {
-      const d = new Date(`${date}T12:00:00`);
-      return d.toLocaleDateString("es-AR", { day: "2-digit", month: "short" }).replace('.', '');
-    } catch (e) {
-      return `R${index + 1}`;
-    }
-  }
-
   function getRaceValue(row, idx) {
     // Prefer structured `races` array, then common key patterns, otherwise empty
     if (Array.isArray(row.races) && idx < row.races.length) return row.races[idx];
@@ -81,7 +72,7 @@ function RankingTable({ rows, raceDates = [], raceCount = 0, discardCount = 0 })
             <th>Timón</th>
             <th>Tripulante</th>
             {raceIndexes.map((i) => (
-              <th key={`race-${i}`}>{formatRaceLabel(raceDates[i], i)}</th>
+              <th key={`race-${i}`}>{`R${i + 1}`}</th>
             ))}
             <th>Puntos</th>
           </tr>
@@ -145,12 +136,14 @@ export default async function ChampionshipPage({ params }) {
     ...folderPhotos,
   ];
   const visiblePhotos = photos.slice(0, 24);
+  const heroPhotos = photos.map((photo) => photo.url);
   const dateLabel = formatRaceDates(championship);
 
   return (
     <main>
       <header className="championship-hero">
-        <a className="back-link" href="/#rankings">
+        <HeroCarousel images={heroPhotos} />
+        <a className="back-link championship-back-link" href="/#rankings">
           <ArrowLeft size={18} />
           Volver
         </a>
@@ -203,3 +196,4 @@ export default async function ChampionshipPage({ params }) {
     </main>
   );
 }
+

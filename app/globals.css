@@ -316,12 +316,38 @@ img {
 }
 
 .event-card {
+  position: relative;
   display: grid;
   grid-template-columns: 74px 1fr;
   gap: 18px;
   min-height: 176px;
   padding: 18px;
+  overflow: hidden;
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.event-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: var(--sea);
+}
+
+.event-card-major::before {
+  background: #ee3b3b;
+}
+
+.event-card-national::before {
+  background: #2f7ec8;
+}
+
+.event-card-training::before {
+  background: #54b948;
+}
+
+.event-card-international::before {
+  background: #f0e70e;
 }
 
 .event-card-link:hover {
@@ -923,9 +949,32 @@ tr:last-child td {
   padding: 120px clamp(18px, 5vw, 72px) 72px;
   color: white;
   overflow: hidden;
-  background:
-    linear-gradient(90deg, rgba(5, 24, 31, 0.88), rgba(5, 24, 31, 0.48)),
-    url("/media/San%20isidro%20labrador/Fotos%20SIL/SIL%202026%2018%20de%20abril/FLO_7614%20copia.jpg") center/cover;
+  background: var(--sea-dark);
+}
+
+.championship-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(5, 24, 31, 0.9), rgba(5, 24, 31, 0.58) 52%, rgba(5, 24, 31, 0.24));
+}
+
+.championship-hero .hero-media {
+  z-index: 0;
+}
+
+.championship-hero .hero-media::after {
+  display: none;
+}
+
+.championship-hero > .kicker,
+.championship-hero > h1,
+.championship-hero > .championship-meta,
+.championship-hero > p:not(.kicker) {
+  position: relative;
+  z-index: 2;
 }
 
 .championship-hero h1 {
@@ -958,6 +1007,22 @@ tr:last-child td {
   border-radius: 8px;
   backdrop-filter: blur(12px);
   font-weight: 850;
+}
+
+.championship-back-link {
+  top: 18px;
+  left: 18px;
+  z-index: 3;
+  width: fit-content;
+  min-height: 34px;
+  padding: 0 12px;
+  font-size: 0.88rem;
+  border-radius: 999px;
+}
+
+.championship-back-link svg {
+  width: 16px;
+  height: 16px;
 }
 
 .championship-meta {

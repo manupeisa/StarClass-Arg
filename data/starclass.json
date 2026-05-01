@@ -10,110 +10,169 @@
   },
   "events": [
     {
-      "title": "Apertura Clase Star",
-      "type": "Regata local",
-      "club": "Yacht Club Argentino",
-      "location": "Dársena Norte",
-      "start": "2026-05-16",
-      "end": "2026-05-17"
+      "title": "Camp. Apertura",
+      "type": "Nacionales",
+      "club": "CNO / Distrito 18",
+      "location": "Copa WILLY C. / Copa ROLLY R.",
+      "start": "2026-01-17",
+      "end": "2026-01-18",
+      "link": ""
     },
     {
-      "title": "Campeonato Metropolitano",
-      "type": "Campeonato",
-      "club": "Club Náutico Olivos",
-      "location": "Río de la Plata",
-      "start": "2026-06-13",
-      "end": "2026-06-14"
+      "title": "Bitito Mieres",
+      "type": "Nacionales",
+      "club": "CNO",
+      "location": "CNO",
+      "start": "2026-02-07",
+      "end": "2026-02-08",
+      "link": ""
     },
     {
-      "title": "Copa Invierno",
-      "type": "Regata puntuable",
-      "club": "Club Náutico San Isidro",
+      "title": "MDQ SIY Quillas",
+      "type": "Nacionales",
+      "club": "CNMP / YCA",
+      "location": "Mar del Plata",
+      "start": "2026-02-27",
+      "end": "2026-03-01",
+      "link": ""
+    },
+    {
+      "title": "Manix Cup",
+      "type": "Nacionales",
+      "club": "CNO",
+      "location": "CNO",
+      "start": "2026-03-14",
+      "end": "2026-03-15",
+      "link": ""
+    },
+    {
+      "title": "Campeonato Argentino",
+      "type": "Majors Cup",
+      "club": "CNSI",
       "location": "San Isidro",
-      "start": "2026-07-11",
-      "end": "2026-07-12"
+      "start": "2026-04-11",
+      "end": "2026-04-19",
+      "link": ""
     },
     {
-      "title": "Campeonato Argentino Star",
-      "type": "Campeonato nacional",
-      "club": "Yacht Club Olivos",
-      "location": "Olivos",
-      "start": "2026-09-18",
-      "end": "2026-09-21",
-      "link": "https://cnsi.org.ar/sanisidrolabrador/"
+      "title": "Copa P. Homps",
+      "type": "Nacionales",
+      "club": "CNO",
+      "location": "CNO",
+      "start": "2026-05-09",
+      "end": "2026-05-10",
+      "link": ""
+    },
+    {
+      "title": "Copa Barrancas",
+      "type": "Nacionales",
+      "club": "CPNLB",
+      "location": "CPNLB",
+      "start": "2026-05-30",
+      "end": "2026-05-31",
+      "link": ""
+    },
+    {
+      "title": "Campeonato Invierno",
+      "type": "Nacionales",
+      "club": "YCO",
+      "location": "YCO",
+      "start": "2026-06-13",
+      "end": "2026-06-14",
+      "link": ""
+    },
+    {
+      "title": "Entrenamiento",
+      "type": "Entrenamiento",
+      "club": "CNO / Distrito 18",
+      "location": "CNO / Distrito 18",
+      "start": "2026-07-04",
+      "end": "2026-07-05",
+      "link": ""
+    },
+    {
+      "title": "Camp. Cuna de la bandera",
+      "type": "Nacionales",
+      "club": "CVR / Rosario",
+      "location": "Rosario",
+      "start": "2026-08-08",
+      "end": "2026-08-09",
+      "link": ""
+    },
+    {
+      "title": "Vela Fest",
+      "type": "Nacionales",
+      "club": "CVB",
+      "location": "CVB",
+      "start": "2026-08-22",
+      "end": "2026-08-23",
+      "link": ""
+    },
+    {
+      "title": "Gran Prix Cerrato",
+      "type": "Majors Cup",
+      "club": "YCO",
+      "location": "YCO",
+      "start": "2026-09-05",
+      "end": "2026-09-06",
+      "link": ""
+    },
+    {
+      "title": "Campeonato Primavera",
+      "type": "Nacionales",
+      "club": "CNO",
+      "location": "CNO",
+      "start": "2026-09-19",
+      "end": "2026-09-20",
+      "link": ""
+    },
+    {
+      "title": "SBA",
+      "type": "Majors Cup",
+      "club": "YCA Darsena",
+      "location": "YCA Darsena",
+      "start": "2026-10-03",
+      "end": "2026-10-04",
+      "link": ""
+    },
+    {
+      "title": "Campeonato Distrito XVIII",
+      "type": "Majors Cup",
+      "club": "CNO",
+      "location": "CNO",
+      "start": "2026-10-10",
+      "end": "2026-10-12",
+      "link": ""
+    },
+    {
+      "title": "Entrenamiento Mundial",
+      "type": "Entrenamiento",
+      "club": "CNO / Distrito 18",
+      "location": "CNO / Distrito 18",
+      "start": "2026-10-31",
+      "end": "2026-11-01",
+      "link": ""
+    },
+    {
+      "title": "Camp. Clausura In Memoriam",
+      "type": "Nacionales",
+      "club": "CNO / Distrito 18",
+      "location": "CNO / Distrito 18",
+      "start": "2026-11-21",
+      "end": "2026-11-22",
+      "link": ""
+    },
+    {
+      "title": "Sudamericano 2026",
+      "type": "Internacionales",
+      "club": "YCA Darsena",
+      "location": "YCA Darsena",
+      "start": "2026-12-05",
+      "end": "2026-12-08",
+      "link": ""
     }
   ],
   "championships": [
-    {
-      "name": "Copa Primavera 2025",
-      "date": "Noviembre 2025",
-      "location": "San Isidro",
-      "summary": "Campeonato de cierre con siete pruebas completadas.",
-      "results": [
-        {
-          "position": 1,
-          "boat": "442367",
-          "helm": "Diego Peisajovich",
-          "crew": "El Oso",
-          "score": 9
-        },
-        {
-          "position": 2,
-          "boat": "260405",
-          "helm": "Manuel Peisajovich",
-          "crew": "Pirata",
-          "score": 7
-        }
-      ],
-      "startDate": "2025-11-15",
-      "endDate": "2025-11-16",
-      "raceDates": [
-        "2025-11-15",
-        "2025-11-16"
-      ]
-    },
-    {
-      "name": "Campeonato Apertura 2026",
-      "date": "Abril 2026",
-      "location": "Buenos Aires",
-      "summary": "Una serie pareja, con viento medio del sudeste y definición en la última prueba.",
-      "results": [
-        {
-          "position": 1,
-          "boat": "ARG 8512",
-          "helm": "Martin Silva",
-          "crew": "Tomás Ruiz",
-          "score": 7
-        },
-        {
-          "position": 2,
-          "boat": "ARG 8460",
-          "helm": "Federico Lagos",
-          "crew": "Nicolás Vera",
-          "score": 14
-        },
-        {
-          "position": 3,
-          "boat": "ARG 8398",
-          "helm": "Santiago Costa",
-          "crew": "Juan Molina",
-          "score": 18
-        },
-        {
-          "position": 4,
-          "boat": "ARG 8321",
-          "helm": "Diego Paredes",
-          "crew": "Lucas Ferrer",
-          "score": 24
-        }
-      ],
-      "startDate": "2026-04-05",
-      "endDate": "2026-04-06",
-      "raceDates": [
-        "2026-04-05",
-        "2026-04-06"
-      ]
-    },
     {
       "name": "San Isidro Labrador ",
       "date": "Abril 2026",
@@ -137,10 +196,14 @@
           "crew": "Lucas Altolaguirre",
           "score": 12,
           "races": [
-            "13",
-            "2",
-            "1",
-            "9"
+            1,
+            1,
+            1,
+            3,
+            4,
+            1,
+            1,
+            22
           ]
         },
         {
@@ -148,96 +211,220 @@
           "boat": "8156",
           "helm": "Hector Longarela",
           "crew": "Hugo Longarela",
-          "score": 30
+          "score": 30,
+          "races": [
+            3,
+            5,
+            14,
+            4,
+            1,
+            3,
+            10,
+            4
+          ]
         },
         {
           "position": 3,
           "boat": "8265",
           "helm": "Lucas Mones Ruiz",
           "crew": "Paolo Farruko Perrino",
-          "score": 38
+          "score": 38,
+          "races": [
+            15,
+            6,
+            6,
+            6,
+            3,
+            11,
+            5,
+            1
+          ]
         },
         {
           "position": 4,
           "boat": "8505",
           "helm": "Fabian Mac Gowan",
           "crew": "Nicolas Rosas",
-          "score": 38
+          "score": 38,
+          "races": [
+            7,
+            4,
+            2,
+            5,
+            18,
+            6,
+            6,
+            8
+          ]
         },
         {
           "position": 5,
           "boat": "8393",
           "helm": "Martin Ferrero",
-          "crew": "Javier Siro",
-          "score": 44
+          "crew": "Javier Sbro",
+          "score": 44,
+          "races": [
+            2,
+            9,
+            4,
+            7,
+            6,
+            7,
+            22,
+            9
+          ]
         },
         {
           "position": 6,
-          "boat": "8003",
+          "boat": "9003",
           "helm": "Daniel Della Torre",
           "crew": "Nicolas Bartolucci",
-          "score": 46
+          "score": 46,
+          "races": [
+            5,
+            12,
+            9,
+            10,
+            7,
+            8,
+            4,
+            3
+          ]
         },
         {
           "position": 7,
           "boat": "8583",
           "helm": "Diego Peisajovich",
           "crew": "Fernando Demilio",
-          "score": 47
+          "score": 47,
+          "races": [
+            6,
+            8,
+            5,
+            2,
+            11,
+            5,
+            13,
+            10
+          ]
         },
         {
           "position": 8,
           "boat": "8551",
           "helm": "Roberto Di Bernardo",
-          "crew": "Felipe Caivano",
-          "score": 48
+          "crew": "Felipe Calvano",
+          "score": 48,
+          "races": [
+            9,
+            2,
+            7,
+            11,
+            5,
+            12,
+            8,
+            6
+          ]
         },
         {
           "position": 9,
           "boat": "8061",
           "helm": "Fabio Scarpati",
-          "crew": "Silvina Otada",
-          "score": 63
+          "crew": "Silvina Orada",
+          "score": 63,
+          "races": [
+            14,
+            10,
+            8,
+            8,
+            15,
+            22,
+            3,
+            5
+          ]
         },
         {
           "position": 10,
           "boat": "8608",
           "helm": "Alberto Zanetti",
           "crew": "Julia Gazari Barroso",
-          "score": 68
+          "score": 68,
+          "races": [
+            10,
+            14,
+            15,
+            22,
+            2,
+            10,
+            15,
+            2
+          ]
         },
         {
           "position": 11,
           "boat": "505",
           "helm": "Facundo Mac Gowan",
-          "crew": "Tomas Fioritti",
-          "score": 70
+          "crew": "Tomas Fioriti",
+          "score": 70,
+          "races": [
+            8,
+            5,
+            10,
+            18,
+            14,
+            14,
+            7,
+            12
+          ]
         },
         {
           "position": 12,
           "boat": "8491",
           "helm": "Nicolas Guzman",
           "crew": "Gonzalo Celedoni",
-          "score": 74
+          "score": 74,
+          "races": [
+            12,
+            7,
+            16,
+            12,
+            14,
+            4,
+            11,
+            14
+          ]
         },
         {
           "position": 13,
-          "boat": "8283",
+          "boat": "8268",
           "helm": "Gerardo Della Torre",
-          "crew": "Julio Felipe Berger",
-          "score": 75
+          "crew": "Jugerno Julio Felipe Berger",
+          "score": 75,
+          "races": [
+            13,
+            15,
+            11,
+            9,
+            19,
+            2,
+            12,
+            13
+          ]
         },
         {
           "position": 14,
           "boat": "8500",
           "helm": "Hernan Monez Ruiz",
           "crew": "",
-          "score": 0,
+          "score": 84,
           "races": [
-            "",
-            "",
-            "",
-            ""
+            17,
+            13,
+            12,
+            1,
+            12,
+            22,
+            22,
+            7
           ]
         },
         {
@@ -245,61 +432,118 @@
           "boat": "8239",
           "helm": "Federico Calegari",
           "crew": "Marcelo Tufarolo",
-          "score": 85
+          "score": 85,
+          "races": [
+            4,
+            11,
+            5,
+            11,
+            10,
+            22,
+            22,
+            22
+          ]
         },
         {
           "position": 16,
           "boat": "8565",
           "helm": "Juan Martin Locatelli",
-          "crew": "Gustavo Economopulos",
-          "score": 100
+          "crew": "Gustavo Iconomopulos",
+          "score": 100,
+          "races": [
+            22,
+            22,
+            22,
+            17,
+            9,
+            13,
+            2,
+            15
+          ]
         },
         {
           "position": 17,
           "boat": "8008",
           "helm": "Erich Mones",
           "crew": "Santiago Toker",
-          "score": 101
+          "score": 101,
+          "races": [
+            11,
+            17,
+            13,
+            14,
+            17,
+            15,
+            14,
+            22
+          ]
         },
         {
           "position": 18,
           "boat": "8251",
           "helm": "Mariano Cambon",
           "crew": "Martin Costa",
-          "score": 114
+          "score": 114,
+          "races": [
+            22,
+            22,
+            22,
+            22,
+            8,
+            9,
+            9,
+            22
+          ]
         },
         {
           "position": 19,
           "boat": "7736",
           "helm": "Gonzalo Berdes",
           "crew": "Joaquin Berdes",
-          "score": 128
+          "score": 128,
+          "races": [
+            22,
+            22,
+            22,
+            16,
+            13,
+            22,
+            22,
+            11
+          ]
         },
         {
           "position": 20,
           "boat": "8278",
           "helm": "Nicolas Cafaro",
           "crew": "Santiago Gonzalez Otharan",
-          "score": 128
+          "score": 128,
+          "races": [
+            16,
+            16,
+            17,
+            15,
+            20,
+            22,
+            22,
+            22
+          ]
         },
         {
           "position": 21,
           "boat": "7534",
           "helm": "Guillermo Calegari",
           "crew": "Andres Villar",
-          "score": 150
-        },
-        {
-          "position": 22,
-          "boat": "2604",
-          "helm": "Manuel Peisajovich ",
-          "crew": "Juli ",
-          "score": 46,
+          "score": 150,
           "races": [
-            "2",
-            " 22",
-            "22",
-            "22"
+            22,
+            18,
+            22,
+            22,
+            22,
+            22,
+            22,
+            22
           ]
         }
       ],
@@ -311,7 +555,7 @@
         "2026-04-18",
         "2026-04-19"
       ],
-      "raceCount": 4,
+      "raceCount": 8,
       "discardCount": 1
     }
   ],

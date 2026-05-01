@@ -106,11 +106,27 @@ function getLatestRanChampionship(championships, today) {
     })[0] || null;
 }
 
+function isUpcomingCompetition(item, today) {
+  const startDate = getStartDate(item);
+  const endDate = getEndDate(item);
+
+  return startDate && startDate >= today && (!endDate || endDate >= today);
+}
+
 function isExternalLink(link) {
   return /^https?:\/\//i.test(link || "");
 }
 
+function getEventTypeClass(type) {
+  const normalized = String(type || "").toLowerCase();
+  if (normalized.includes("major")) return "event-card-major";
+  if (normalized.includes("entrenamiento")) return "event-card-training";
+  if (normalized.includes("internacional")) return "event-card-international";
+  return "event-card-national";
+}
+
 function EventCard({ event }) {
+  const className = `event-card ${getEventTypeClass(event.type)}${event.link ? " event-card-link" : ""}`;
   const content = (
     <>
       <div className="event-date">
@@ -126,12 +142,12 @@ function EventCard({ event }) {
   );
 
   if (!event.link) {
-    return <article className="event-card">{content}</article>;
+    return <article className={className}>{content}</article>;
   }
 
   return (
     <a
-      className="event-card event-card-link"
+      className={className}
       href={event.link}
       target={isExternalLink(event.link) ? "_blank" : undefined}
       rel={isExternalLink(event.link) ? "noopener noreferrer" : undefined}
@@ -159,8 +175,7 @@ export default async function Home() {
   const sanIsidroPhotos = await listSanIsidroPhotos();
   const sortedChampionships = [...data.championships].sort((a, b) => getComparableDate(a) - getComparableDate(b));
   const futureChampionships = data.championships.filter((championship) => {
-    const endDate = getEndDate(championship);
-    return endDate && endDate >= today;
+    return isUpcomingCompetition(championship, today);
   });
   const latest = getLatestRanChampionship(data.championships, today);
   const upcomingEvents = [
@@ -178,8 +193,7 @@ export default async function Home() {
     })),
   ]
     .filter((event) => {
-      const endDate = getEndDate(event);
-      return endDate && endDate >= today;
+      return isUpcomingCompetition(event, today);
     })
     .sort((a, b) => getComparableDate(a, "start") - getComparableDate(b, "start"));
   const heroImages = folderImages.length
@@ -202,7 +216,7 @@ export default async function Home() {
         <HeroCarousel images={heroImages} />
         <div className="hero-content">
           <p className="kicker">Clase Star Argentina</p>
-          <h1>Regatas, flotas y resultados de la Clase Star nacional.</h1>
+          <h1>Regatas, flotas y resultados de la Clase Star.</h1>
           <p>
             Un espacio simple para seguir el calendario, ver fotos de regatas,
             consultar rankings y mantener ordenada la informacion de la flota.
