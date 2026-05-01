@@ -359,19 +359,36 @@ img {
 .event-date {
   display: grid;
   align-content: center;
-  height: 76px;
+  min-height: 92px;
+  padding: 10px 8px;
   text-align: center;
   color: white;
-  background: var(--sea-dark);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02)),
+    linear-gradient(180deg, #073a45, #0b5c6b);
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 10px 22px rgba(7, 58, 69, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
 }
 
 .event-date span {
+  display: block;
   font-weight: 900;
+  font-size: 1.02rem;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .event-date small {
-  color: rgba(255, 255, 255, 0.7);
+  display: block;
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
 .event-card p {
@@ -379,14 +396,20 @@ img {
 }
 
 .event-card h3 {
-  margin: 8px 0 16px;
-  font-size: 1.28rem;
+  margin: 8px 0 14px;
+  font-size: 1.36rem;
+  line-height: 1.04;
 }
 
 .event-card span,
 .championship-list p,
 .dues span {
   color: var(--muted);
+}
+
+.event-card span {
+  display: inline-block;
+  padding-top: 4px;
 }
 
 .split {
