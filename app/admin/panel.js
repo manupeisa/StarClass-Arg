@@ -354,6 +354,7 @@ export default function AdminPanel({ initialData }) {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(nextData),
+      credentials: "include",
     });
     setSaving(false);
     setMessage(response.ok ? "Cambios guardados." : "No se pudieron guardar los cambios.");
@@ -364,16 +365,28 @@ export default function AdminPanel({ initialData }) {
     const form = new FormData();
     form.append("file", file);
 
-    const response = await fetch("/api/admin/upload", { method: "POST", body: form, credentials: "include" });
-    const body = await response.json();
+    try {
+      const response = await fetch("/api/admin/upload", { method: "POST", body: form, credentials: "include" });
+      let body;
+      try {
+        body = await response.json();
+      } catch (parseErr) {
+        console.error("Error parsing JSON response:", parseErr, response.status);
+        setMessage(`Error: respuesta inválida del servidor (${response.status})`);
+        return;
+      }
 
-    if (response.ok) {
-      const gallery = updateArrayItem(data.gallery, index, { image: body.url });
-      const nextData = { ...data, gallery };
-      setData(nextData);
-      await saveData(nextData);
-    } else {
-      setMessage(body.message || "No se pudo subir la imagen.");
+      if (response.ok && body.url) {
+        const gallery = updateArrayItem(data.gallery, index, { image: body.url });
+        const nextData = { ...data, gallery };
+        setData(nextData);
+        await saveData(nextData);
+      } else {
+        setMessage(body.message || "No se pudo subir la imagen.");
+      }
+    } catch (err) {
+      console.error("Upload image error:", err);
+      setMessage(`Error al subir: ${err.message}`);
     }
   }
 
@@ -384,21 +397,33 @@ export default function AdminPanel({ initialData }) {
     const form = new FormData();
     selected.forEach((file) => form.append("files", file));
 
-    const response = await fetch("/api/admin/upload", { method: "POST", body: form, credentials: "include" });
-    const body = await response.json();
+    try {
+      const response = await fetch("/api/admin/upload", { method: "POST", body: form, credentials: "include" });
+      let body;
+      try {
+        body = await response.json();
+      } catch (parseErr) {
+        console.error("Error parsing JSON response:", parseErr, response.status);
+        setMessage(`Error: respuesta inválida del servidor (${response.status})`);
+        return;
+      }
 
-    if (response.ok) {
-      const newPhotos = body.urls.map((url, index) => ({
-        title: `Foto ${data.gallery.length + index + 1}`,
-        caption: "Nueva foto de regata.",
-        image: url,
-      }));
-      const nextData = { ...data, gallery: [...data.gallery, ...newPhotos] };
-      setData(nextData);
-      await saveData(nextData);
-      setMessage(`Se subieron ${body.urls.length} fotos al archivo visual.`);
-    } else {
-      setMessage(body.message || "No se pudieron subir las imágenes.");
+      if (response.ok && body.urls && body.urls.length) {
+        const newPhotos = body.urls.map((url, index) => ({
+          title: `Foto ${data.gallery.length + index + 1}`,
+          caption: "Nueva foto de regata.",
+          image: url,
+        }));
+        const nextData = { ...data, gallery: [...data.gallery, ...newPhotos] };
+        setData(nextData);
+        await saveData(nextData);
+        setMessage(`Se subieron ${body.urls.length} fotos al archivo visual.`);
+      } else {
+        setMessage(body.message || "No se pudieron subir las imágenes.");
+      }
+    } catch (err) {
+      console.error("Upload gallery images error:", err);
+      setMessage(`Error al subir: ${err.message}`);
     }
   }
 
@@ -409,18 +434,30 @@ export default function AdminPanel({ initialData }) {
     const form = new FormData();
     selected.forEach((file) => form.append("files", file));
 
-    const response = await fetch("/api/admin/upload", { method: "POST", body: form, credentials: "include" });
-    const body = await response.json();
+    try {
+      const response = await fetch("/api/admin/upload", { method: "POST", body: form, credentials: "include" });
+      let body;
+      try {
+        body = await response.json();
+      } catch (parseErr) {
+        console.error("Error parsing JSON response:", parseErr, response.status);
+        setMessage(`Error: respuesta inválida del servidor (${response.status})`);
+        return;
+      }
 
-    if (response.ok) {
-      const photos = [...(championship.photos || []), ...body.urls];
-      const championships = updateArrayItem(data.championships, championshipIndex, { photos });
-      const nextData = { ...data, championships };
-      setData(nextData);
-      await saveData(nextData);
-      setMessage(`Se subieron ${body.urls.length} fotos al campeonato.`);
-    } else {
-      setMessage(body.message || "No se pudieron subir las fotos del campeonato.");
+      if (response.ok && body.urls && body.urls.length) {
+        const photos = [...(championship.photos || []), ...body.urls];
+        const championships = updateArrayItem(data.championships, championshipIndex, { photos });
+        const nextData = { ...data, championships };
+        setData(nextData);
+        await saveData(nextData);
+        setMessage(`Se subieron ${body.urls.length} fotos al campeonato.`);
+      } else {
+        setMessage(body.message || "No se pudieron subir las fotos del campeonato.");
+      }
+    } catch (err) {
+      console.error("Upload championship photos error:", err);
+      setMessage(`Error al subir: ${err.message}`);
     }
   }
 

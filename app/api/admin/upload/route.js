@@ -21,54 +21,64 @@ function safeFileName(name) {
 }
 
 export async function POST(request) {
-  if (!isAdminSession()) {
-    return NextResponse.json({ message: "No autorizado." }, { status: 401 });
-  }
-
-  const form = await request.formData();
-  const files = [...form.getAll("files"), form.get("file")].filter(Boolean);
-
-  if (!files.length || files.every((file) => typeof file === "string")) {
-    return NextResponse.json({ message: "No se recibió una imagen." }, { status: 400 });
-  }
-
-  const uploaded = [];
-  const rejected = [];
-
-  for (const file of files) {
-    if (typeof file === "string") continue;
-
-    if (!file.type.startsWith("image/")) {
-      rejected.push({ name: file.name, reason: "No es imagen" });
-      continue;
+  try {
+    if (!isAdminSession()) {
+      return NextResponse.json({ ok: false, message: "No autorizado." }, { status: 401 });
     }
 
-    if (file.size > maxFileSize) {
-      rejected.push({ name: file.name, reason: "Archivo mayor a 25 MB" });
-      continue;
+    const form = await request.formData();
+    const files = [...form.getAll("files"), form.get("file")].filter(Boolean);
+
+    if (!files.length || files.every((file) => typeof file === "string")) {
+      return NextResponse.json({ ok: false, message: "No se recibió una imagen." }, { status: 400 });
     }
 
-    const filename = safeFileName(file.name);
-    const bytes = Buffer.from(await file.arrayBuffer());
+    const uploaded = [];
+    const rejected = [];
 
-    if (hasR2Config()) {
-      const url = await uploadToR2({
-        bytes,
-        contentType: file.type,
-        key: `uploads/${filename}`,
-      });
-      uploaded.push(url);
-    } else {
-      const uploadsDir = path.join(process.cwd(), "public", "uploads");
-      await fs.mkdir(uploadsDir, { recursive: true });
-      await fs.writeFile(path.join(uploadsDir, filename), bytes);
-      uploaded.push(`/uploads/${filename}`);
+    for (const file of files) {
+      if (typeof file === "string") continue;
+
+      if (!file.type.startsWith("image/")) {
+        rejected.push({ name: file.name, reason: "No es imagen" });
+        continue;
+      }
+
+      if (file.size > maxFileSize) {
+        rejected.push({ name: file.name, reason: "Archivo mayor a 25 MB" });
+        continue;
+      }
+
+      const filename = safeFileName(file.name);
+      const bytes = Buffer.from(await file.arrayBuffer());
+
+      try {
+        if (hasR2Config()) {
+          const url = await uploadToR2({
+            bytes,
+            contentType: file.type,
+            key: `uploads/${filename}`,
+          });
+          uploaded.push(url);
+        } else {
+          const uploadsDir = path.join(process.cwd(), "public", "uploads");
+          await fs.mkdir(uploadsDir, { recursive: true });
+          await fs.writeFile(path.join(uploadsDir, filename), bytes);
+          uploaded.push(`/uploads/${filename}`);
+        }
+      } catch (uploadErr) {
+        console.error("Upload error for file", file.name, uploadErr);
+        rejected.push({ name: file.name, reason: `Error al subir: ${uploadErr.message}` });
+      }
     }
-  }
 
-  if (!uploaded.length) {
-    return NextResponse.json({ message: "No se pudo subir ninguna imagen.", rejected }, { status: 400 });
-  }
+    if (!uploaded.length) {
+      return NextResponse.json({ ok: false, message: "No se pudo subir ninguna imagen.", rejected }, { status: 400 });
+    }
 
-  return NextResponse.json({ url: uploaded[0], urls: uploaded, rejected });
+    return NextResponse.json({ ok: true, url: uploaded[0], urls: uploaded, rejected });
+  } catch (err) {
+    console.error("Upload endpoint error:", err);
+    return NextResponse.json({ ok: false, message: `Error: ${err.message}` }, { status: 500 });
+  }
 }
