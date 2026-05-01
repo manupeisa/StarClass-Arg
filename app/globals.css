@@ -404,18 +404,30 @@ img {
 }
 
 .event-card .event-register-link {
-  display: inline-flex;
+  display: flex;
   width: fit-content;
   margin-top: 12px;
-  color: inherit;
+  min-height: 40px;
+  padding: 0 14px;
+  color: #b07c11;
+  background: rgba(214, 161, 31, 0.1);
+  border-color: rgba(198, 154, 52, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(198, 154, 52, 0.15) inset,
+    0 0 16px rgba(198, 154, 52, 0.14);
+}
+
+.event-card .event-register-link::before {
+  background: linear-gradient(120deg, transparent, rgba(243, 206, 110, 0.36), transparent);
 }
 
 .event-card-link:hover .event-register-link {
   transform: translateY(-1px);
-  border-color: rgba(139, 233, 255, 0.95);
+  color: #c79421;
+  border-color: rgba(220, 175, 67, 0.75);
   box-shadow:
-    0 0 0 1px rgba(139, 233, 255, 0.24) inset,
-    0 0 28px rgba(139, 233, 255, 0.28);
+    0 0 0 1px rgba(220, 175, 67, 0.24) inset,
+    0 0 22px rgba(220, 175, 67, 0.25);
 }
 
 .event-card-link:hover .event-register-link::before {

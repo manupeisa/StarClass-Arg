@@ -138,7 +138,7 @@ function EventCard({ event }) {
         <p>{event.type}</p>
         <h3>{event.title}</h3>
         <span>{event.club}{" · "}{event.location}</span>
-        {hasLink ? <span className="button ghost event-register-link">Inscribirse</span> : null}
+        {hasLink ? <span className="button ghost event-register-link">Inscribirse!</span> : null}
       </div>
     </>
   );
