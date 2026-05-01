@@ -83,13 +83,18 @@ function championshipTime(championship) {
   return Number.isNaN(time) ? Number.MAX_SAFE_INTEGER : time;
 }
 
-async function compressImageFile(file) {
+async function compressImageFile(file, options = {}) {
   if (!file?.type?.startsWith("image/")) return file;
 
-  const smallEnough = file.size <= 2.5 * 1024 * 1024 && /image\/(jpeg|jpg|webp)/i.test(file.type);
+  const {
+    maxSize = 1600,
+    quality = 0.82,
+    skipIfBelowBytes = 2.5 * 1024 * 1024,
+  } = options;
+
+  const smallEnough = file.size <= skipIfBelowBytes && /image\/(jpeg|jpg|webp)/i.test(file.type);
   if (smallEnough) return file;
 
-  const maxSize = 1600;
   let bitmap;
 
   try {
@@ -115,7 +120,7 @@ async function compressImageFile(file) {
   ctx.drawImage(bitmap, 0, 0, width, height);
   bitmap.close?.();
 
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.82));
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
   if (!blob) return file;
 
   const baseName = file.name.replace(/\.[^.]+$/, "") || "foto";
@@ -124,6 +129,36 @@ async function compressImageFile(file) {
 
 async function postImageFile(file) {
   const optimized = await compressImageFile(file);
+  const form = new FormData();
+  form.append("file", optimized);
+
+  const response = await fetch("/api/admin/upload", {
+    method: "POST",
+    body: form,
+    credentials: "include",
+  });
+
+  let body;
+  try {
+    body = await response.json();
+  } catch (parseErr) {
+    console.error("Error parsing JSON response:", parseErr, response.status);
+    throw new Error(`respuesta inválida del servidor (${response.status})`);
+  }
+
+  if (!response.ok) {
+    throw new Error(body.message || `error ${response.status}`);
+  }
+
+  return body;
+}
+
+async function postHeroImageFile(file) {
+  const optimized = await compressImageFile(file, {
+    maxSize: 3200,
+    quality: 0.98,
+    skipIfBelowBytes: 6 * 1024 * 1024,
+  });
   const form = new FormData();
   form.append("file", optimized);
 
@@ -222,7 +257,7 @@ export default function AdminPanel({ initialData }) {
     if (!file) return;
 
     try {
-      const body = await postImageFile(file);
+      const body = await postHeroImageFile(file);
       if (body?.url) {
         const nextHeroImages = [...new Set([...normalizeHeroImages(data.hero?.images), body.url])];
         const nextData = { ...data, hero: { ...(data.hero || {}), images: nextHeroImages } };
@@ -243,7 +278,7 @@ export default function AdminPanel({ initialData }) {
     try {
       const urls = [];
       for (const file of selected) {
-        const body = await postImageFile(file);
+        const body = await postHeroImageFile(file);
         if (body?.url) urls.push(body.url);
       }
 
