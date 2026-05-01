@@ -417,86 +417,19 @@ img {
   background: var(--panel);
 }
 
-/* Ranking preview and row styles */
-.ranking-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.ranking-preview-list {
-  display: grid;
-  gap: 12px;
-}
-.ranking-preview-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 18px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,250,0.98));
-  box-shadow: 0 8px 20px rgba(16,32,37,0.06);
-  border: 1px solid rgba(16,32,37,0.04);
-}
-.ranking-preview-rank {
-  min-width: 56px;
-  min-height: 56px;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  color: white;
-  border-radius: 8px;
-  background: var(--sea-dark);
-  box-shadow: 0 6px 18px rgba(7,58,69,0.08);
-}
-.ranking-preview-body strong { display: block; font-size: 1rem; }
-.ranking-preview-body span { display: block; color: var(--muted); font-size: 0.9rem; }
-.ranking-preview-body small { display: block; color: rgba(100,113,116,0.9); }
-.ranking-preview-total { margin-left: auto; text-align: right; }
-.ranking-preview-total span { display: block; color: var(--muted); font-size: 0.8rem; }
-.ranking-preview-total strong { font-size: 1.6rem; }
-
 /* Top-3 colors */
-.ranking-preview-card.rank-1 .ranking-preview-rank,
-.ranking-row.rank-1 .ranking-row-rank {
+.ranking-preview-card.rank-1 .ranking-preview-rank {
   background: linear-gradient(180deg, #ffd86b, #d6a33b);
   color: #3a2b11;
 }
-.ranking-preview-card.rank-2 .ranking-preview-rank,
-.ranking-row.rank-2 .ranking-row-rank {
+.ranking-preview-card.rank-2 .ranking-preview-rank {
   background: linear-gradient(180deg, #e6eef6, #c7d6df);
   color: #1b2b33;
 }
-.ranking-preview-card.rank-3 .ranking-preview-rank,
-.ranking-row.rank-3 .ranking-row-rank {
+.ranking-preview-card.rank-3 .ranking-preview-rank {
   background: linear-gradient(180deg, #f0d9c2, #c88a60);
   color: #2b160d;
 }
-
-/* Championship ranking list (public) */
-.ranking-list-inner { display: grid; gap: 12px; padding: 12px; }
-.ranking-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 14px;
-  border-radius: 10px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  box-shadow: 0 8px 18px rgba(16,32,37,0.04);
-}
-.ranking-row-rank {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  place-items: center;
-  font-weight: 900;
-  color: white;
-  border-radius: 8px;
-  background: var(--sea-dark);
-}
-.ranking-row-body strong { display: block; }
-.ranking-row-body span { display: block; color: var(--muted); }
-.ranking-row-score { margin-left: auto; font-weight: 900; font-size: 1.4rem; }
 
 /* Improve table visuals while keeping structure for general full table */
 table th {
@@ -1602,10 +1535,6 @@ button:disabled {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.form-grid.two {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 .race-dates-editor {
   display: grid;
   gap: 12px;
@@ -1931,7 +1860,6 @@ button:disabled {
   .photo-admin-grid,
   .championship-photo-strip,
   .form-grid.three,
-  .form-grid.two,
   .admin-calendar-layout,
   .admin-calendar-card,
   .race-dates-editor .admin-calendar-card,
