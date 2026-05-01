@@ -1,4 +1,4 @@
-﻿import { ArrowLeft, CalendarDays, MapPin, Trophy } from "lucide-react";
+﻿import { ArrowLeft, CalendarDays, MapPin, Trophy, Home } from "lucide-react";
 import { notFound } from "next/navigation";
 import { listPhotosFromFolder } from "../../../lib/hero-images";
 import { getChampionshipResultScore } from "../../../lib/general-ranking";
@@ -193,6 +193,10 @@ export default async function ChampionshipPage({ params }) {
           </div>
         </section>
       ) : null}
+
+      <a href="/" className="championship-home" aria-label="Ir al inicio">
+        <Home size={18} />
+      </a>
     </main>
   );
 }

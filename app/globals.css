@@ -379,6 +379,14 @@ img {
   color: #ffffff;
 }
 
+/* Ensure all dates in the "Proximas competiciones" (calendar) are displayed in white */
+#calendario .event-date span {
+  color: #ffffff;
+}
+#calendario .event-date small {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .event-card p {
   color: var(--gold);
 }
@@ -497,6 +505,32 @@ table th {
 }
 table td {
   padding: 18px;
+}
+
+/* Small fixed home button on championship pages */
+.championship-home {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 40px;
+  height: 40px;
+  display: inline-grid;
+  place-items: center;
+  background: rgba(7, 58, 69, 0.92);
+  color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgba(16, 32, 37, 0.18);
+  z-index: 60;
+  transition: transform 150ms ease, opacity 150ms ease;
+}
+.championship-home:hover {
+  transform: translateY(-4px);
+  opacity: 0.98;
+}
+.championship-home svg { display: block; }
+
+@media (max-width: 640px) {
+  .championship-home { right: 12px; bottom: 12px; width: 36px; height: 36px; }
 }
 table tr {
   transition: background 160ms ease, transform 160ms ease;
