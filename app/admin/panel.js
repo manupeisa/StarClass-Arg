@@ -69,6 +69,71 @@ function championshipTime(championship) {
   return Number.isNaN(time) ? Number.MAX_SAFE_INTEGER : time;
 }
 
+async function compressImageFile(file) {
+  if (!file?.type?.startsWith("image/")) return file;
+
+  const smallEnough = file.size <= 2.5 * 1024 * 1024 && /image\/(jpeg|jpg|webp)/i.test(file.type);
+  if (smallEnough) return file;
+
+  const maxSize = 1600;
+  let bitmap;
+
+  try {
+    bitmap = await createImageBitmap(file);
+  } catch {
+    return file;
+  }
+
+  const ratio = Math.min(maxSize / bitmap.width, maxSize / bitmap.height, 1);
+  const width = Math.max(1, Math.round(bitmap.width * ratio));
+  const height = Math.max(1, Math.round(bitmap.height * ratio));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    bitmap.close?.();
+    return file;
+  }
+
+  ctx.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close?.();
+
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.82));
+  if (!blob) return file;
+
+  const baseName = file.name.replace(/\.[^.]+$/, "") || "foto";
+  return new File([blob], `${baseName}.jpg`, { type: "image/jpeg", lastModified: Date.now() });
+}
+
+async function postImageFile(file) {
+  const optimized = await compressImageFile(file);
+  const form = new FormData();
+  form.append("file", optimized);
+
+  const response = await fetch("/api/admin/upload", {
+    method: "POST",
+    body: form,
+    credentials: "include",
+  });
+
+  let body;
+  try {
+    body = await response.json();
+  } catch (parseErr) {
+    console.error("Error parsing JSON response:", parseErr, response.status);
+    throw new Error(`respuesta inválida del servidor (${response.status})`);
+  }
+
+  if (!response.ok) {
+    throw new Error(body.message || `error ${response.status}`);
+  }
+
+  return body;
+}
+
 export default function AdminPanel({ initialData }) {
   const [data, setData] = useState(initialData);
   const [championshipIndex, setChampionshipIndex] = useState(0);
@@ -362,21 +427,11 @@ export default function AdminPanel({ initialData }) {
 
   async function uploadImage(file, index) {
     if (!file) return;
-    const form = new FormData();
-    form.append("file", file);
 
     try {
-      const response = await fetch("/api/admin/upload", { method: "POST", body: form, credentials: "include" });
-      let body;
-      try {
-        body = await response.json();
-      } catch (parseErr) {
-        console.error("Error parsing JSON response:", parseErr, response.status);
-        setMessage(`Error: respuesta inválida del servidor (${response.status})`);
-        return;
-      }
+      const body = await postImageFile(file);
 
-      if (response.ok && body.url) {
+      if (body?.url) {
         const gallery = updateArrayItem(data.gallery, index, { image: body.url });
         const nextData = { ...data, gallery };
         setData(nextData);
@@ -394,22 +449,15 @@ export default function AdminPanel({ initialData }) {
     const selected = Array.from(files || []);
     if (!selected.length) return;
 
-    const form = new FormData();
-    selected.forEach((file) => form.append("files", file));
-
     try {
-      const response = await fetch("/api/admin/upload", { method: "POST", body: form, credentials: "include" });
-      let body;
-      try {
-        body = await response.json();
-      } catch (parseErr) {
-        console.error("Error parsing JSON response:", parseErr, response.status);
-        setMessage(`Error: respuesta inválida del servidor (${response.status})`);
-        return;
+      const urls = [];
+      for (const file of selected) {
+        const body = await postImageFile(file);
+        if (body?.url) urls.push(body.url);
       }
 
-      if (response.ok && body.urls && body.urls.length) {
-        const newPhotos = body.urls.map((url, index) => ({
+      if (urls.length) {
+        const newPhotos = urls.map((url, index) => ({
           title: `Foto ${data.gallery.length + index + 1}`,
           caption: "Nueva foto de regata.",
           image: url,
@@ -417,9 +465,9 @@ export default function AdminPanel({ initialData }) {
         const nextData = { ...data, gallery: [...data.gallery, ...newPhotos] };
         setData(nextData);
         await saveData(nextData);
-        setMessage(`Se subieron ${body.urls.length} fotos al archivo visual.`);
+        setMessage(`Se subieron ${urls.length} fotos al archivo visual.`);
       } else {
-        setMessage(body.message || "No se pudieron subir las imágenes.");
+        setMessage("No se pudieron subir las imágenes.");
       }
     } catch (err) {
       console.error("Upload gallery images error:", err);
@@ -431,29 +479,22 @@ export default function AdminPanel({ initialData }) {
     const selected = Array.from(files || []);
     if (!selected.length) return;
 
-    const form = new FormData();
-    selected.forEach((file) => form.append("files", file));
-
     try {
-      const response = await fetch("/api/admin/upload", { method: "POST", body: form, credentials: "include" });
-      let body;
-      try {
-        body = await response.json();
-      } catch (parseErr) {
-        console.error("Error parsing JSON response:", parseErr, response.status);
-        setMessage(`Error: respuesta inválida del servidor (${response.status})`);
-        return;
+      const urls = [];
+      for (const file of selected) {
+        const body = await postImageFile(file);
+        if (body?.url) urls.push(body.url);
       }
 
-      if (response.ok && body.urls && body.urls.length) {
-        const photos = [...(championship.photos || []), ...body.urls];
+      if (urls.length) {
+        const photos = [...(championship.photos || []), ...urls];
         const championships = updateArrayItem(data.championships, championshipIndex, { photos });
         const nextData = { ...data, championships };
         setData(nextData);
         await saveData(nextData);
-        setMessage(`Se subieron ${body.urls.length} fotos al campeonato.`);
+        setMessage(`Se subieron ${urls.length} fotos al campeonato.`);
       } else {
-        setMessage(body.message || "No se pudieron subir las fotos del campeonato.");
+        setMessage("No se pudieron subir las fotos del campeonato.");
       }
     } catch (err) {
       console.error("Upload championship photos error:", err);
