@@ -65,7 +65,34 @@ ADMIN_PASSWORD=tu_contrasenia
 Desde el panel se puede:
 
 - Modificar campeonatos y tablas de posiciones.
-- Subir fotos a `public/uploads`.
+- Subir fotos. En local van a `public/uploads`; en Vercel van a Cloudflare R2 si estan configuradas las variables.
 - Editar fotos existentes.
 - Importar un Excel de pagos Dues.
 - Editar el calendario.
+
+## Deploy en Vercel con Cloudflare R2
+
+Vercel no debe subir las carpetas pesadas de fotos al deploy. El proyecto ya incluye `.vercelignore` y `next.config.mjs` para excluir:
+
+```text
+Imagenes
+San isidro labrador
+public/uploads
+```
+
+Para que el admin pueda subir fotos en produccion, crear un bucket R2 en Cloudflare y configurar estas variables en Vercel:
+
+```text
+R2_ACCOUNT_ID=tu_account_id
+R2_ACCESS_KEY_ID=tu_access_key_id
+R2_SECRET_ACCESS_KEY=tu_secret_access_key
+R2_BUCKET_NAME=nombre_del_bucket
+R2_ENDPOINT=https://tu_account_id.r2.cloudflarestorage.com
+R2_PUBLIC_URL=https://tu-dominio-publico-del-bucket
+ADMIN_USER=tu_usuario
+ADMIN_PASSWORD=tu_contrasenia
+```
+
+`R2_PUBLIC_URL` tiene que ser una URL publica que sirva archivos del bucket, por ejemplo un dominio conectado a R2.
+
+Importante: las fotos viejas que hoy estan en `Imagenes`, `San isidro labrador` o `public/uploads` hay que subirlas al bucket R2 y reemplazar sus rutas en `data/starclass.json` por URLs publicas de R2. Las fotos nuevas subidas desde el admin ya se guardan automaticamente en R2.

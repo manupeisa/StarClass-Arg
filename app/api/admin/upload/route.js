@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
 import { isAdminSession } from "../../../../lib/admin-auth";
+import { hasR2Config, uploadToR2 } from "../../../../lib/r2-upload";
 
 export const dynamic = "force-dynamic";
 const maxFileSize = 25 * 1024 * 1024;
@@ -31,9 +32,6 @@ export async function POST(request) {
     return NextResponse.json({ message: "No se recibió una imagen." }, { status: 400 });
   }
 
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
-  await fs.mkdir(uploadsDir, { recursive: true });
-
   const uploaded = [];
   const rejected = [];
 
@@ -52,8 +50,20 @@ export async function POST(request) {
 
     const filename = safeFileName(file.name);
     const bytes = Buffer.from(await file.arrayBuffer());
-    await fs.writeFile(path.join(uploadsDir, filename), bytes);
-    uploaded.push(`/uploads/${filename}`);
+
+    if (hasR2Config()) {
+      const url = await uploadToR2({
+        bytes,
+        contentType: file.type,
+        key: `uploads/${filename}`,
+      });
+      uploaded.push(url);
+    } else {
+      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      await fs.mkdir(uploadsDir, { recursive: true });
+      await fs.writeFile(path.join(uploadsDir, filename), bytes);
+      uploaded.push(`/uploads/${filename}`);
+    }
   }
 
   if (!uploaded.length) {
