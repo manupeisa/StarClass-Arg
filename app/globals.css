@@ -374,6 +374,11 @@ img {
   color: rgba(255, 255, 255, 0.7);
 }
 
+/* Make the start-date (top line) white for championship cards */
+.event-card-national .event-date span {
+  color: #ffffff;
+}
+
 .event-card p {
   color: var(--gold);
 }
