@@ -33,6 +33,16 @@ function emptyHeroImage() {
   return "";
 }
 
+function normalizeHeroImages(images) {
+  return (images || [])
+    .map((item) => {
+      if (typeof item === "string") return item;
+      if (item && typeof item === "object") return item.url || item.image || "";
+      return "";
+    })
+    .filter(Boolean);
+}
+
 function emptyEvent() {
   return {
     title: "Nueva competencia",
@@ -144,7 +154,7 @@ async function postImageFile(file) {
     try {
       const body = await postImageFile(file);
       if (body?.url) {
-        const nextHeroImages = [...new Set([...(data.hero?.images || []), body.url])];
+        const nextHeroImages = [...new Set([...normalizeHeroImages(data.hero?.images), body.url])];
         const nextData = { ...data, hero: { ...(data.hero || {}), images: nextHeroImages } };
         setData(nextData);
         await saveData(nextData);
@@ -156,11 +166,35 @@ async function postImageFile(file) {
     }
   }
 
+  async function uploadHeroImages(files) {
+    const selected = Array.from(files || []);
+    if (!selected.length) return;
+
+    try {
+      const urls = [];
+      for (const file of selected) {
+        const body = await postImageFile(file);
+        if (body?.url) urls.push(body.url);
+      }
+
+      if (urls.length) {
+        const nextHeroImages = [...new Set([...normalizeHeroImages(data.hero?.images), ...urls])];
+        const nextData = { ...data, hero: { ...(data.hero || {}), images: nextHeroImages } };
+        setData(nextData);
+        await saveData(nextData);
+        setMessage(`Se subieron ${urls.length} fotos al hero.`);
+      }
+    } catch (err) {
+      console.error("Upload hero images error:", err);
+      setMessage(`Error al subir fotos al hero: ${err.message}`);
+    }
+  }
+
   async function addGalleryToHero(count = 3) {
     const urls = (data.gallery || []).map((item) => item.image).filter(Boolean).slice(0, count);
     if (!urls.length) return;
 
-    const nextHeroImages = [...new Set([...(data.hero?.images || []), ...urls])];
+    const nextHeroImages = [...new Set([...normalizeHeroImages(data.hero?.images), ...urls])];
     const nextData = { ...data, hero: { ...(data.hero || {}), images: nextHeroImages } };
     setData(nextData);
     await saveData(nextData);
@@ -171,7 +205,7 @@ async function postImageFile(file) {
     const urls = (championship?.photos || []).filter(Boolean).slice(0, 5);
     if (!urls.length) return;
 
-    const nextHeroImages = [...new Set([...(data.hero?.images || []), ...urls])];
+    const nextHeroImages = [...new Set([...normalizeHeroImages(data.hero?.images), ...urls])];
     const nextData = { ...data, hero: { ...(data.hero || {}), images: nextHeroImages } };
     setData(nextData);
     await saveData(nextData);
@@ -179,7 +213,7 @@ async function postImageFile(file) {
   }
 
   async function removeHeroImage(index) {
-    const nextHeroImages = (data.hero?.images || []).filter((_, itemIndex) => itemIndex !== index);
+    const nextHeroImages = normalizeHeroImages(data.hero?.images).filter((_, itemIndex) => itemIndex !== index);
     const nextData = { ...data, hero: { ...(data.hero || {}), images: nextHeroImages } };
     setData(nextData);
     await saveData(nextData);
@@ -248,7 +282,10 @@ export default function AdminPanel({ initialData }) {
   function patchHero(patch) {
     setData((current) => ({
       ...current,
-      hero: { ...(current.hero || {}), ...patch },
+      hero: {
+        ...(current.hero || {}),
+        ...(patch.images ? { images: normalizeHeroImages(patch.images) } : patch),
+      },
     }));
   }
 
@@ -639,11 +676,11 @@ export default function AdminPanel({ initialData }) {
               <h3>Fotos del inicio</h3>
             </div>
             <div className="upload-actions">
-              <button onClick={() => addGalleryToHero(3)}>
+              <button type="button" onClick={() => addGalleryToHero(3)}>
                 <Plus size={18} />
                 Desde galería
               </button>
-              <button onClick={addChampionshipToHero}>
+              <button type="button" onClick={addChampionshipToHero}>
                 <Plus size={18} />
                 Desde campeonato
               </button>
@@ -652,13 +689,30 @@ export default function AdminPanel({ initialData }) {
                 Subir al hero
                 <input type="file" accept="image/*" onChange={(event) => uploadHeroImage(event.target.files?.[0])} />
               </label>
+              <label className="upload-button">
+                <ImagePlus size={18} />
+                Subir varias
+                <input type="file" accept="image/*" multiple onChange={(event) => uploadHeroImages(event.target.files)} />
+              </label>
+              <label className="upload-button">
+                <ImagePlus size={18} />
+                Subir carpeta
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  directory=""
+                  webkitdirectory=""
+                  onChange={(event) => uploadHeroImages(event.target.files)}
+                />
+              </label>
             </div>
           </div>
           <p className="admin-help">
             Estas imágenes se guardan en <strong>starclass.json</strong> y se muestran en el carrusel del inicio. No dependen de carpetas locales.
           </p>
           <div className="photo-admin-grid">
-            {(data.hero?.images || []).map((url, index) => (
+            {normalizeHeroImages(data.hero?.images).map((url, index) => (
               <article key={`${url || "hero"}-${index}`}>
                 {url ? <img src={url} alt="Hero" /> : <div className="empty-photo">Sin imagen</div>}
                 <label>
@@ -666,7 +720,11 @@ export default function AdminPanel({ initialData }) {
                   <input
                     value={url}
                     onChange={(event) =>
-                      patchHero({ images: updateArrayItem(data.hero?.images || [], index, event.target.value) })
+                      patchHero({
+                        images: normalizeHeroImages(data.hero?.images).map((item, itemIndex) =>
+                          itemIndex === index ? event.target.value : item,
+                        ),
+                      })
                     }
                   />
                 </label>
@@ -674,7 +732,7 @@ export default function AdminPanel({ initialData }) {
                   Reemplazar archivo
                   <input type="file" accept="image/*" onChange={(event) => uploadHeroImage(event.target.files?.[0])} />
                 </label>
-                <button className="danger" onClick={() => removeHeroImage(index)}>
+                <button type="button" className="danger" onClick={() => removeHeroImage(index)}>
                   <Trash2 size={16} />
                   Borrar
                 </button>
@@ -682,7 +740,7 @@ export default function AdminPanel({ initialData }) {
             ))}
             <article>
               <div className="empty-photo">Nueva imagen</div>
-              <button onClick={() => patchHero({ images: [...(data.hero?.images || []), emptyHeroImage()] })}>
+              <button type="button" onClick={() => patchHero({ images: [...normalizeHeroImages(data.hero?.images), emptyHeroImage()] })}>
                 <Plus size={18} />
                 Agregar URL
               </button>
