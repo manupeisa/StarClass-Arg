@@ -404,15 +404,22 @@ img {
 }
 
 .event-card .event-register-link {
-  display: block;
-  margin-top: 10px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #d6a11f;
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 12px;
+  color: inherit;
 }
 
 .event-card-link:hover .event-register-link {
-  color: #f0c94a;
+  transform: translateY(-1px);
+  border-color: rgba(139, 233, 255, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(139, 233, 255, 0.24) inset,
+    0 0 28px rgba(139, 233, 255, 0.28);
+}
+
+.event-card-link:hover .event-register-link::before {
+  transform: translateX(120%);
 }
 
 .split {
