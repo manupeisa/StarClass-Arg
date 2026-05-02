@@ -21,6 +21,8 @@ import {
 } from "../../lib/general-ranking";
 import { GeneralRankingTable } from "../../components/ui/general-ranking";
 
+const uploadTargetBytes = 3.8 * 1024 * 1024;
+
 function emptyResult(position = 1) {
   return { position, boat: "", helm: "", crew: "", score: 0, races: [] };
 }
@@ -90,9 +92,12 @@ async function compressImageFile(file, options = {}) {
     maxSize = 1600,
     quality = 0.82,
     skipIfBelowBytes = 2.5 * 1024 * 1024,
+    targetBytes = uploadTargetBytes,
+    minSize = 960,
+    minQuality = 0.62,
   } = options;
 
-  const smallEnough = file.size <= skipIfBelowBytes && /image\/(jpeg|jpg|webp)/i.test(file.type);
+  const smallEnough = file.size <= Math.min(skipIfBelowBytes, targetBytes) && /image\/(jpeg|jpg|webp)/i.test(file.type);
   if (smallEnough) return file;
 
   let bitmap;
@@ -103,32 +108,83 @@ async function compressImageFile(file, options = {}) {
     return file;
   }
 
-  const ratio = Math.min(maxSize / bitmap.width, maxSize / bitmap.height, 1);
-  const width = Math.max(1, Math.round(bitmap.width * ratio));
-  const height = Math.max(1, Math.round(bitmap.height * ratio));
+  let longestSide = Math.min(maxSize, Math.max(bitmap.width, bitmap.height));
+  let currentQuality = quality;
+  let outputBlob = null;
 
   const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-
   const ctx = canvas.getContext("2d");
   if (!ctx) {
     bitmap.close?.();
     return file;
   }
 
-  ctx.drawImage(bitmap, 0, 0, width, height);
+  while (longestSide >= minSize) {
+    const ratio = Math.min(longestSide / bitmap.width, longestSide / bitmap.height, 1);
+    const width = Math.max(1, Math.round(bitmap.width * ratio));
+    const height = Math.max(1, Math.round(bitmap.height * ratio));
+
+    canvas.width = width;
+    canvas.height = height;
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, width, height);
+    ctx.drawImage(bitmap, 0, 0, width, height);
+
+    outputBlob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", currentQuality));
+
+    if (outputBlob && outputBlob.size <= targetBytes) {
+      break;
+    }
+
+    if (currentQuality > minQuality) {
+      currentQuality = Math.max(minQuality, currentQuality - 0.08);
+    } else {
+      longestSide = Math.floor(longestSide * 0.82);
+      currentQuality = quality;
+    }
+  }
+
   bitmap.close?.();
 
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
-  if (!blob) return file;
+  if (!outputBlob) return file;
+
+  if (outputBlob.size > targetBytes) {
+    throw new Error("La imagen es demasiado grande. Proba exportarla en JPG o reducirla antes de subirla.");
+  }
 
   const baseName = file.name.replace(/\.[^.]+$/, "") || "foto";
-  return new File([blob], `${baseName}.jpg`, { type: "image/jpeg", lastModified: Date.now() });
+  return new File([outputBlob], `${baseName}.jpg`, { type: "image/jpeg", lastModified: Date.now() });
+}
+
+async function parseUploadResponse(response) {
+  let body;
+
+  try {
+    body = await response.json();
+  } catch (parseErr) {
+    console.error("Error parsing JSON response:", parseErr, response.status);
+
+    if (response.status === 413) {
+      throw new Error("la imagen sigue siendo demasiado pesada para subirla. Proba con una foto mas chica.");
+    }
+
+    throw new Error(`respuesta invalida del servidor (${response.status})`);
+  }
+
+  if (!response.ok) {
+    throw new Error(body.message || `error ${response.status}`);
+  }
+
+  return body;
 }
 
 async function postImageFile(file) {
-  const optimized = await compressImageFile(file);
+  const optimized = await compressImageFile(file, {
+    maxSize: 1800,
+    quality: 0.84,
+    skipIfBelowBytes: uploadTargetBytes,
+  });
   const form = new FormData();
   form.append("file", optimized);
 
@@ -138,26 +194,16 @@ async function postImageFile(file) {
     credentials: "include",
   });
 
-  let body;
-  try {
-    body = await response.json();
-  } catch (parseErr) {
-    console.error("Error parsing JSON response:", parseErr, response.status);
-    throw new Error(`respuesta inválida del servidor (${response.status})`);
-  }
-
-  if (!response.ok) {
-    throw new Error(body.message || `error ${response.status}`);
-  }
-
-  return body;
+  return parseUploadResponse(response);
 }
 
 async function postHeroImageFile(file) {
   const optimized = await compressImageFile(file, {
-    maxSize: 3200,
-    quality: 0.98,
-    skipIfBelowBytes: 6 * 1024 * 1024,
+    maxSize: 2400,
+    quality: 0.86,
+    skipIfBelowBytes: uploadTargetBytes,
+    minSize: 1280,
+    minQuality: 0.66,
   });
   const form = new FormData();
   form.append("file", optimized);
@@ -168,19 +214,7 @@ async function postHeroImageFile(file) {
     credentials: "include",
   });
 
-  let body;
-  try {
-    body = await response.json();
-  } catch (parseErr) {
-    console.error("Error parsing JSON response:", parseErr, response.status);
-    throw new Error(`respuesta inválida del servidor (${response.status})`);
-  }
-
-  if (!response.ok) {
-    throw new Error(body.message || `error ${response.status}`);
-  }
-
-  return body;
+  return parseUploadResponse(response);
 }
 
 export default function AdminPanel({ initialData }) {
