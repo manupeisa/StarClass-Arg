@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CalendarDays,
   House,
@@ -10,7 +10,6 @@ import {
   Save,
   Sheet,
   Trash2,
-  Trophy,
 } from "lucide-react";
 import DateCalendar, { formatAdminDate } from "../../components/ui/date-calendar";
 import {
@@ -22,6 +21,16 @@ import {
 import { GeneralRankingTable } from "../../components/ui/general-ranking";
 
 const uploadTargetBytes = 3.8 * 1024 * 1024;
+
+const adminSections = [
+  { id: "site-settings", label: "Ajustes" },
+  { id: "hero", label: "Hero" },
+  { id: "posicionamiento", label: "General" },
+  { id: "campeonatos", label: "Campeonatos" },
+  { id: "galeria", label: "Fotos" },
+  { id: "dues", label: "Dues" },
+  { id: "calendario", label: "Calendario" },
+];
 
 function emptyResult(position = 1) {
   return { position, boat: "", helm: "", crew: "", score: 0, races: [] };
@@ -224,6 +233,7 @@ export default function AdminPanel({ initialData }) {
   const [saving, setSaving] = useState(false);
   const [generalValidationError, setGeneralValidationError] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
+  const [activeAdminSection, setActiveAdminSection] = useState(adminSections[1].id);
 
   const championship = data.championships[championshipIndex] || data.championships[0];
   const championshipColumns = useMemo(
@@ -235,6 +245,25 @@ export default function AdminPanel({ initialData }) {
     [data.championships],
   );
   const generalMode = data.generalRankingMode || "auto";
+  const activeSection = adminSections.find((section) => section.id === activeAdminSection) || adminSections[1];
+
+  useEffect(() => {
+    function syncFromHash() {
+      const hash = window.location.hash.replace("#", "");
+      if (adminSections.some((section) => section.id === hash)) {
+        setActiveAdminSection(hash);
+      }
+    }
+
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
+
+  function openAdminSection(id) {
+    setActiveAdminSection(id);
+    window.history.replaceState(null, "", `#${id}`);
+  }
 
   const paidSummary = useMemo(() => {
     const paid = data.dues.filter((dues) => dues.status === "Pago").length;
@@ -689,33 +718,43 @@ export default function AdminPanel({ initialData }) {
 
   return (
     <main className="admin-shell">
-      <aside className="admin-sidebar">
-        <div>
-          <span>StarClass</span>
-          <h1>Administrador</h1>
-        </div>
-        <nav>
-          <a href="#posicionamiento"><Trophy size={18} /> General</a>
-          <a href="#campeonatos"><Trophy size={18} /> Campeonatos</a>
-          <a href="#galeria"><ImagePlus size={18} /> Fotos</a>
-          <a href="#dues"><Sheet size={18} /> Dues</a>
-          <a href="#calendario"><CalendarDays size={18} /> Calendario</a>
-        </nav>
-        <button onClick={logout} className="sidebar-button">
-          <LogOut size={18} />
-          Salir
-        </button>
-        <a href="/" className="sidebar-button" style={{ marginTop: 8 }}>
-          <House size={18} />
-          Volver al inicio
+      <header className="admin-header">
+        <a className="brand" href="/" aria-label="Volver al inicio">
+          <span><img src="/stars-logo.svg" alt="" /></span>
+          StarClass Admin
         </a>
-      </aside>
+        <nav className="admin-nav" aria-label="Secciones del administrador">
+          <ul className="admin-nav-list">
+            {adminSections.map((section) => (
+              <li className="admin-nav-tab" key={section.id}>
+                <button
+                  type="button"
+                  className={activeAdminSection === section.id ? "is-active" : ""}
+                  onClick={() => openAdminSection(section.id)}
+                >
+                  {section.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="admin-header-actions">
+          <a href="/" className="admin-header-button">
+            <House size={18} />
+            Inicio
+          </a>
+          <button type="button" onClick={logout} className="admin-header-button">
+            <LogOut size={18} />
+            Salir
+          </button>
+        </div>
+      </header>
 
       <section className="admin-content">
         <header className="admin-topbar">
           <div>
             <p>Panel de control</p>
-            <h2>Contenido de la web</h2>
+            <h2>{activeSection.label}</h2>
           </div>
           <button onClick={() => saveData()} disabled={saving}>
             <Save size={18} />
@@ -725,7 +764,7 @@ export default function AdminPanel({ initialData }) {
 
         {message ? <div className="admin-message">{message}</div> : null}
 
-        <section className="admin-section" id="site-settings">
+        <section className={activeAdminSection === "site-settings" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="site-settings">
           <div className="admin-section-title">
             <div>
               <span>Configuración</span>
@@ -738,7 +777,7 @@ export default function AdminPanel({ initialData }) {
           </label>
         </section>
 
-        <section className="admin-section" id="hero">
+        <section className={activeAdminSection === "hero" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="hero">
           <div className="admin-section-title">
             <div>
               <span>Hero principal</span>
@@ -817,7 +856,7 @@ export default function AdminPanel({ initialData }) {
           </div>
         </section>
 
-        <section className="admin-section" id="posicionamiento">
+        <section className={activeAdminSection === "posicionamiento" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="posicionamiento">
           <div className="admin-section-title">
             <div>
               <span>Ranking anual</span>
@@ -904,7 +943,7 @@ export default function AdminPanel({ initialData }) {
           )}
         </section>
 
-        <section className="admin-section" id="campeonatos">
+        <section className={activeAdminSection === "campeonatos" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="campeonatos">
           <div className="admin-section-title">
             <div>
               <span>Resultados</span>
@@ -1126,7 +1165,7 @@ export default function AdminPanel({ initialData }) {
           </button>
         </section>
 
-        <section className="admin-section" id="galeria">
+        <section className={activeAdminSection === "galeria" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="galeria">
           <div className="admin-section-title">
             <div>
               <span>Archivo visual</span>
@@ -1176,7 +1215,7 @@ export default function AdminPanel({ initialData }) {
           </div>
         </section>
 
-        <section className="admin-section" id="dues">
+        <section className={activeAdminSection === "dues" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="dues">
           <div className="admin-section-title">
             <div>
               <span>{paidSummary}</span>
@@ -1203,7 +1242,7 @@ export default function AdminPanel({ initialData }) {
           </div>
         </section>
 
-        <section className="admin-section" id="calendario">
+        <section className={activeAdminSection === "calendario" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="calendario">
           <div className="admin-section-title">
             <div>
               <span>Regatas</span>
