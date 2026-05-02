@@ -1162,24 +1162,31 @@ tr:last-child td {
   }
 
   .nav-header {
-    margin: 0 -14px;
-    padding: 0 14px 2px;
-    scrollbar-width: none;
-  }
-
-  .nav-header::-webkit-scrollbar {
-    display: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
   }
 
   .nav-header-list {
-    padding: 3px;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px;
     border-width: 1px;
     box-shadow: 0 8px 20px rgba(16, 32, 37, 0.06);
   }
 
+  .nav-header-tab {
+    flex: 1 1 calc(33.333% - 6px);
+  }
+
   .nav-header-tab a {
-    padding: 8px 10px;
-    font-size: 0.66rem;
+    width: 100%;
+    justify-content: center;
+    padding: 8px 6px;
+    font-size: 0.62rem;
     white-space: nowrap;
   }
 
