@@ -186,8 +186,21 @@ img {
 }
 
 .hero-content {
+  position: relative;
   max-width: 780px;
-  padding-top: 34px;
+  padding-top: clamp(104px, 14vh, 148px);
+}
+
+.hero-content::before {
+  content: "";
+  position: absolute;
+  top: clamp(-72px, -5vw, -42px);
+  left: 0;
+  width: clamp(132px, 11.5vw, 184px);
+  aspect-ratio: 212 / 199;
+  background: url("/district-18-logo-transparent.png") center / contain no-repeat;
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.28));
+  pointer-events: none;
 }
 
 .kicker,
@@ -203,6 +216,11 @@ img {
 .kicker,
 .section-header span {
   color: var(--gold);
+}
+
+.hero .kicker {
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 2px 14px rgba(5, 24, 31, 0.32);
 }
 
 .hero h1 {
@@ -1200,10 +1218,19 @@ tr:last-child td {
     align-items: center;
   }
 
+  .hero-content {
+    padding-top: 104px;
+  }
+
+  .hero-content::before {
+    top: -42px;
+    width: 104px;
+  }
+
   .hero h1 {
     font-size: clamp(2.45rem, 12.5vw, 3.8rem);
     line-height: 0.98;
-    max-width: 10ch;
+    max-width: 11ch;
   }
 
   .hero p {

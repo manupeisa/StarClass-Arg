@@ -236,14 +236,14 @@ export default async function Home() {
             </a>
             <a className="button ghost" href="https://www.starclass.org/" target="_blank">
               <Anchor size={18} />
-              StarClass
+              ISCYRA
             </a>
           </div>
         </div>
       </section>
 
       <section className="section calendar-section" id="calendario">
-        <SectionHeader eyebrow="Temporada 2026" title="Proximas competiciones">
+        <SectionHeader eyebrow="Temporada 2026" title="Proximas Campeonatos">
           Proximas fechas de regatas nacionales y campeonatos destacados. Los campeonatos ya corridos no aparecen aca!.
         </SectionHeader>
         <div className="event-grid">
