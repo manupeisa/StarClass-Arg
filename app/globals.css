@@ -1165,28 +1165,28 @@ tr:last-child td {
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow: visible;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .nav-header::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-header-list {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px;
-    padding: 6px;
+    width: max-content;
+    flex-wrap: nowrap;
+    gap: 1px;
+    padding: 3px;
     border-width: 1px;
     box-shadow: 0 8px 20px rgba(16, 32, 37, 0.06);
   }
 
-  .nav-header-tab {
-    flex: 1 1 calc(33.333% - 6px);
-  }
-
   .nav-header-tab a {
-    width: 100%;
-    justify-content: center;
-    padding: 8px 6px;
-    font-size: 0.62rem;
+    padding: 7px 8px;
+    font-size: 0.58rem;
     white-space: nowrap;
   }
 
@@ -1218,6 +1218,11 @@ tr:last-child td {
     margin-top: 24px;
   }
 
+  .nav-header-list,
+  .nav-header-tab a {
+    font-size: 0.56rem;
+  }
+
   .button {
     justify-content: center;
     width: 100%;
@@ -1232,6 +1237,17 @@ tr:last-child td {
     grid-template-columns: 1fr;
   }
 
+
+@media (max-width: 420px) {
+  .nav-header-list {
+    padding: 2px;
+  }
+
+  .nav-header-tab a {
+    padding: 6px 7px;
+    font-size: 0.5rem;
+  }
+}
   .section {
     padding: 52px 16px;
   }
