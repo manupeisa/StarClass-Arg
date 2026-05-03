@@ -346,10 +346,11 @@ export default async function Home() {
         </div>
         <aside className="social-card">
           <Anchor size={26} />
-          <h2>Pago de Dues</h2>
-          <p>Consulta el estado completo de timoneles, tripulantes y FAY de cada barco.</p>
-          <a href="/dues">
-            Ver más
+          <h2>Comunidad y redes</h2>
+          <p>Links oficiales para difundir regatas, fotos y novedades.</p>
+          <a href={data.social.instagram.url} target="_blank">
+            <Instagram size={18} />
+            {data.social.instagram.label}
             <ExternalLink size={16} />
           </a>
         </aside>
