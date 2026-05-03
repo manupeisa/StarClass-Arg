@@ -10,7 +10,7 @@ const defaultItems = [
   { label: "Fotos", href: "#fotos" },
   { label: "Major", href: "/posicionamiento" },
   { label: "Sudamericano", href: "/sudamericano" },
-  { label: "Comunidad", href: "#comunidad" },
+  { label: "Dues", href: "/dues" },
 ];
 
 export default function NavHeader({ items = defaultItems }) {

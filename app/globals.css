@@ -1240,6 +1240,20 @@ tr:last-child td {
   font-weight: 800;
 }
 
+.dues-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  margin-top: 18px;
+  padding: 0 14px;
+  color: white;
+  background: var(--sea-dark);
+  border-radius: 8px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
 .social-card {
   align-self: start;
   background: var(--sea-dark);
@@ -1261,6 +1275,123 @@ tr:last-child td {
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
   font-weight: 800;
+}
+
+.dues-page-hero {
+  display: grid;
+  gap: 18px;
+  padding: 118px clamp(22px, 5vw, 90px) 72px;
+  color: white;
+  background:
+    linear-gradient(90deg, rgba(5, 24, 31, 0.95), rgba(7, 58, 69, 0.82)),
+    url("/uploads/flo-8042-copia-1777585686571.jpg") center / cover;
+}
+
+.dues-page-hero h1 {
+  margin: 0;
+  font-family: var(--display-font);
+  font-size: clamp(3rem, 7vw, 6.4rem);
+  line-height: 0.92;
+}
+
+.dues-page-hero > p:not(.kicker) {
+  max-width: 760px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.12rem;
+  line-height: 1.65;
+}
+
+.dues-page-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.dues-page-stats article {
+  display: grid;
+  grid-template-columns: 28px auto;
+  gap: 3px 10px;
+  align-items: center;
+  min-width: 180px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  backdrop-filter: blur(12px);
+}
+
+.dues-page-stats svg {
+  grid-row: span 2;
+  color: var(--gold);
+}
+
+.dues-page-stats strong {
+  font-family: var(--display-font);
+  font-size: 2rem;
+  line-height: 0.9;
+}
+
+.dues-page-stats span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.dues-table-section {
+  background: #f8faf8;
+}
+
+.dues-table-card {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 8px 28px rgba(16, 32, 37, 0.05);
+}
+
+.dues-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+}
+
+.dues-table th,
+.dues-table td {
+  padding: 16px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.dues-table th {
+  color: var(--muted);
+  background: #f6f8f7;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.dues-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.dues-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-weight: 900;
+}
+
+.dues-status.is-ok {
+  color: #126b38;
+  background: #e3f5e9;
+}
+
+.dues-status.is-pending {
+  color: #9f2929;
+  background: #fee7e7;
 }
 
 .championship-hero {
@@ -2299,16 +2430,31 @@ button:disabled {
   color: var(--muted);
 }
 
-.dues-admin-list,
+.dues-admin-table,
 .event-admin-list {
   display: grid;
   gap: 10px;
 }
 
+.dues-admin-table {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
 .dues-admin-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 160px;
-  gap: 10px;
+  grid-template-columns: minmax(110px, 0.8fr) minmax(150px, 1fr) minmax(120px, 0.8fr) minmax(150px, 1fr) 150px 170px 92px 44px;
+  gap: 8px;
+  align-items: center;
+  min-width: 1040px;
+}
+
+.dues-admin-row.head {
+  padding: 0 0 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 900;
 }
 
 .event-edit {

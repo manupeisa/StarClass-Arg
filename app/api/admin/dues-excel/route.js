@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import * as XLSX from "xlsx";
 import { isAdminSession } from "../../../../lib/admin-auth";
 import { readStarclassData, writeStarclassData } from "../../../../lib/starclass-data";
@@ -19,10 +20,18 @@ function findValue(row, names) {
 
 function normalizeStatus(value) {
   const text = normalizeText(value);
-  if (["si", "sí", "pago", "pagado", "ok", "true", "1", "abonado"].includes(text)) {
-    return "Pago";
+  if (["life", "vitalicio"].includes(text)) {
+    return "Life";
+  }
+  if (["si", "sí", "activo", "pago", "pagado", "ok", "true", "1", "abonado"].includes(text)) {
+    return "Activo";
   }
   return "Pendiente";
+}
+
+function normalizeYesNo(value) {
+  const text = normalizeText(value);
+  return ["si", "sí", "yes", "true", "1", "ok"].includes(text) ? "Si" : "No";
 }
 
 export async function POST(request) {
@@ -45,13 +54,17 @@ export async function POST(request) {
     .map((row) => ({
       boat: String(findValue(row, ["barco", "vela", "numero", "nro", "arg"]) || "").trim(),
       owner: String(findValue(row, ["dueno", "dueño", "propietario", "owner", "nombre", "socio"]) || "").trim(),
-      status: normalizeStatus(findValue(row, ["diu", "pago", "estado", "status", "abonado"])),
+      fleet: String(findValue(row, ["flota", "fleet"]) || "").trim(),
+      crew: String(findValue(row, ["tripulante", "crew"]) || "").trim(),
+      helmDues: normalizeStatus(findValue(row, ["dues timonel", "timonel", "diu", "pago", "estado", "status", "abonado"])),
+      crewDues: normalizeStatus(findValue(row, ["dues tripulante", "dues tripulantes", "tripulantes"])),
+      fay: normalizeYesNo(findValue(row, ["fay"])),
     }))
     .filter((row) => row.boat || row.owner);
 
   if (!dues.length) {
     return NextResponse.json(
-      { message: "No pude encontrar filas válidas. Usá columnas como Barco, Propietario y Dues/Pago." },
+      { message: "No pude encontrar filas válidas. Usá columnas como Barco, Propietario, Flota, Tripulante, Dues Timonel, Dues Tripulantes y FAY." },
       { status: 400 },
     );
   }
@@ -59,6 +72,8 @@ export async function POST(request) {
   const data = await readStarclassData();
   data.dues = dues;
   await writeStarclassData(data);
+  revalidatePath("/");
+  revalidatePath("/dues");
 
   return NextResponse.json({ ok: true, count: dues.length, dues });
 }

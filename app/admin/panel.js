@@ -41,6 +41,18 @@ function emptyGallery() {
   return { title: "Nueva foto", caption: "", image: "" };
 }
 
+function emptyDuesRow() {
+  return {
+    boat: "",
+    owner: "",
+    fleet: "",
+    crew: "",
+    helmDues: "Pendiente",
+    crewDues: "Pendiente",
+    fay: "No",
+  };
+}
+
 function emptyHeroImage() {
   return "";
 }
@@ -299,8 +311,8 @@ export default function AdminPanel({ initialData }) {
   }
 
   const paidSummary = useMemo(() => {
-    const paid = data.dues.filter((dues) => dues.status === "Pago").length;
-    return `${paid}/${data.dues.length} pagos`;
+    const paid = data.dues.filter((dues) => (dues.helmDues || dues.status) !== "Pendiente").length;
+    return `${paid}/${data.dues.length} timoneles activos`;
   }, [data.dues]);
 
   const invalidManualIndexes = useMemo(() => {
@@ -1439,24 +1451,55 @@ export default function AdminPanel({ initialData }) {
           <div className="admin-section-title">
             <div>
               <span>{paidSummary}</span>
-              <h3>Pagos de Dues desde Excel</h3>
+              <h3>Tabla de Dues</h3>
             </div>
-            <label className="upload-button">
-              <Sheet size={18} />
-              Importar Excel
-              <input type="file" accept=".xlsx,.xls,.csv" onChange={(event) => importDues(event.target.files?.[0])} />
-            </label>
+            <div className="upload-actions">
+              <button type="button" onClick={() => patchData({ dues: [...data.dues, emptyDuesRow()] })}>
+                <Plus size={18} />
+                Agregar fila
+              </button>
+              <label className="upload-button">
+                <Sheet size={18} />
+                Importar Excel
+                <input type="file" accept=".xlsx,.xls,.csv" onChange={(event) => importDues(event.target.files?.[0])} />
+              </label>
+            </div>
           </div>
-          <p className="admin-help">El Excel puede tener columnas como Barco, Propietario y Pago/Dues/Estado.</p>
-          <div className="dues-admin-list">
-            {data.dues.map((dues, index) => (
+          <p className="admin-help">Editá Barco, Propietario, Flota, Tripulante, Dues Timonel, Dues Tripulantes y FAY. Guardá con el botón superior.</p>
+          <div className="dues-admin-table">
+            <div className="dues-admin-row head">
+              <span>Barco</span>
+              <span>Propietario</span>
+              <span>Flota</span>
+              <span>Tripulante</span>
+              <span>Dues Timonel</span>
+              <span>Dues Tripulantes</span>
+              <span>FAY</span>
+              <span></span>
+            </div>
+            {(data.dues || []).map((dues, index) => (
               <div className="dues-admin-row" key={index}>
-                <input value={dues.boat} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { boat: event.target.value }) })} />
-                <input value={dues.owner} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { owner: event.target.value }) })} />
-                <select value={dues.status} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { status: event.target.value }) })}>
-                  <option>Pago</option>
+                <input value={dues.boat || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { boat: event.target.value }) })} />
+                <input value={dues.owner || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { owner: event.target.value }) })} />
+                <input value={dues.fleet || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { fleet: event.target.value }) })} />
+                <input value={dues.crew || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { crew: event.target.value }) })} />
+                <select value={dues.helmDues || dues.status || "Pendiente"} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { helmDues: event.target.value }) })}>
                   <option>Pendiente</option>
+                  <option>Activo</option>
+                  <option>Life</option>
                 </select>
+                <select value={dues.crewDues || "Pendiente"} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { crewDues: event.target.value }) })}>
+                  <option>Pendiente</option>
+                  <option>Activo</option>
+                  <option>Life</option>
+                </select>
+                <select value={dues.fay || "No"} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { fay: event.target.value }) })}>
+                  <option>Si</option>
+                  <option>No</option>
+                </select>
+                <button type="button" className="icon-button" onClick={() => patchData({ dues: data.dues.filter((_, rowIndex) => rowIndex !== index) })} aria-label="Borrar fila">
+                  <Trash2 size={16} />
+                </button>
               </div>
             ))}
           </div>

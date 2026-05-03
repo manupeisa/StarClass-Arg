@@ -336,31 +336,34 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="section dues-section" id="comunidad">
+      <section className="section dues-section" id="dues">
         <div>
           <SectionHeader eyebrow="Administración" title="Pagos de Dues">
             Estado visible para ordenar la informacion de la flota.
           </SectionHeader>
           <div className="dues-grid">
             {data.dues.map((dues) => (
-              <article className={dues.status === "Pago" ? "dues paid" : "dues pending"} key={dues.boat}>
-                {dues.status === "Pago" ? <CheckCircle2 size={18} /> : <ShieldCheck size={18} />}
+              <article className={dues.helmDues === "Pendiente" ? "dues pending" : "dues paid"} key={dues.boat}>
+                {dues.helmDues === "Pendiente" ? <ShieldCheck size={18} /> : <CheckCircle2 size={18} />}
                 <div>
                   <strong>{dues.boat}</strong>
-                  <span>{dues.owner}</span>
+                  <span>{dues.owner || dues.proprietario}</span>
                 </div>
-                <em>{dues.status}</em>
+                <em>{dues.helmDues || dues.status}</em>
               </article>
             ))}
           </div>
+          <a className="dues-more-link" href="/dues">
+            Ver más
+            <ArrowRight size={18} />
+          </a>
         </div>
         <aside className="social-card">
           <Anchor size={26} />
-          <h2>Comunidad y redes</h2>
-          <p>Links oficiales para difundir regatas, fotos y novedades.</p>
-          <a href={data.social.instagram.url} target="_blank">
-            <Instagram size={18} />
-            {data.social.instagram.label}
+          <h2>Pago de Dues</h2>
+          <p>Consulta el estado completo de timoneles, tripulantes y FAY de cada barco.</p>
+          <a href="/dues">
+            Ver más
             <ExternalLink size={16} />
           </a>
         </aside>

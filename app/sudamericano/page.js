@@ -20,7 +20,7 @@ const pageNavItems = [
   { label: "Fotos", href: "/#fotos" },
   { label: "Major", href: "/posicionamiento" },
   { label: "Sudamericano", href: "/sudamericano" },
-  { label: "Comunidad", href: "/#comunidad" },
+  { label: "Dues", href: "/dues" },
 ];
 
 const ycaLocationUrl = "https://yca.org.ar/event-location/sede-darsena-norte/";

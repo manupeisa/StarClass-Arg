@@ -621,22 +621,38 @@
     {
       "boat": "ARG 8512",
       "owner": "Martín Silva",
-      "status": "Pago"
+      "fleet": "",
+      "crew": "",
+      "helmDues": "Activo",
+      "crewDues": "Pendiente",
+      "fay": "No"
     },
     {
       "boat": "ARG 8460",
       "owner": "Federico Lagos",
-      "status": "Pago"
+      "fleet": "",
+      "crew": "",
+      "helmDues": "Activo",
+      "crewDues": "Pendiente",
+      "fay": "No"
     },
     {
       "boat": "ARG 8398",
       "owner": "Santiago Costa",
-      "status": "Pendiente"
+      "fleet": "",
+      "crew": "",
+      "helmDues": "Pendiente",
+      "crewDues": "Pendiente",
+      "fay": "No"
     },
     {
       "boat": "ARG 8321",
       "owner": "Diego Paredes",
-      "status": "Pago"
+      "fleet": "",
+      "crew": "",
+      "helmDues": "Activo",
+      "crewDues": "Pendiente",
+      "fay": "No"
     }
   ],
   "gallery": [
