@@ -26,6 +26,13 @@ function normalizeDues(row) {
   };
 }
 
+function normalizeCrewDues(row) {
+  return {
+    crew: row.crew || "",
+    crewDues: row.crewDues || "Pendiente",
+  };
+}
+
 function StatusBadge({ value }) {
   const isPending = value === "Pendiente" || value === "No";
   const statusClass = value === "Life" ? "is-life" : isPending ? "is-pending" : "is-ok";
@@ -42,8 +49,14 @@ function StatusBadge({ value }) {
 export default async function DuesPage() {
   const data = await readStarclassData();
   const duesRows = (data.dues || []).map(normalizeDues);
+  const crewRows = (Array.isArray(data.duesCrew) && data.duesCrew.length
+    ? data.duesCrew
+    : duesRows.map((row) => ({ crew: row.crew, crewDues: row.crewDues }))
+  )
+    .map(normalizeCrewDues)
+    .filter((row) => row.crew);
   const activeHelms = duesRows.filter((row) => row.helmDues !== "Pendiente").length;
-  const activeCrews = duesRows.filter((row) => row.crew && row.crewDues !== "Pendiente").length;
+  const activeCrews = crewRows.filter((row) => row.crewDues !== "Pendiente").length;
 
   return (
     <main>
@@ -128,9 +141,9 @@ export default async function DuesPage() {
               </tr>
             </thead>
             <tbody>
-              {duesRows.map((row, index) => (
+              {crewRows.map((row, index) => (
                 <tr key={`${row.crew || "tripulante"}-${index}`}>
-                  <td>{row.crew || "-"}</td>
+                  <td>{row.crew}</td>
                   <td><StatusBadge value={row.crewDues} /></td>
                 </tr>
               ))}

@@ -679,5 +679,6 @@
     }
   ],
   "copyright": "2026 StarClass todos los derechos reservados",
-  "generalRankingMode": "auto"
+  "generalRankingMode": "auto",
+  "duesCrew": []
 }

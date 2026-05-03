@@ -1365,7 +1365,21 @@ tr:last-child td {
 }
 
 .dues-crew-table {
-  min-width: 520px;
+  min-width: 0;
+}
+
+.dues-crew-table-card {
+  width: min(100%, 640px);
+}
+
+.dues-crew-table th,
+.dues-crew-table td {
+  padding: 14px 18px;
+}
+
+.dues-crew-table th:first-child,
+.dues-crew-table td:first-child {
+  width: 52%;
 }
 
 .dues-table th,
@@ -2471,9 +2485,9 @@ button:disabled {
 }
 
 .dues-admin-row-crew {
-  grid-template-columns: minmax(220px, 1fr) 170px;
-  max-width: 560px;
-  min-width: 420px;
+  grid-template-columns: minmax(220px, 1fr) 170px 44px;
+  max-width: 620px;
+  min-width: 0;
 }
 
 .dues-admin-row.head {

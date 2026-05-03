@@ -55,12 +55,16 @@ export async function POST(request) {
       boat: String(findValue(row, ["barco", "vela", "numero", "nro", "arg"]) || "").trim(),
       owner: String(findValue(row, ["dueno", "dueño", "propietario", "owner", "nombre", "socio"]) || "").trim(),
       fleet: String(findValue(row, ["flota", "fleet"]) || "").trim(),
-      crew: String(findValue(row, ["tripulante", "crew"]) || "").trim(),
       helmDues: normalizeStatus(findValue(row, ["dues timonel", "timonel", "diu", "pago", "estado", "status", "abonado"])),
-      crewDues: normalizeStatus(findValue(row, ["dues tripulante", "dues tripulantes", "tripulantes"])),
       fay: normalizeYesNo(findValue(row, ["fay"])),
     }))
     .filter((row) => row.boat || row.owner);
+  const duesCrew = rows
+    .map((row) => ({
+      crew: String(findValue(row, ["tripulante", "crew"]) || "").trim(),
+      crewDues: normalizeStatus(findValue(row, ["dues tripulante", "dues tripulantes", "tripulantes"])),
+    }))
+    .filter((row) => row.crew);
 
   if (!dues.length) {
     return NextResponse.json(
@@ -71,6 +75,7 @@ export async function POST(request) {
 
   const data = await readStarclassData();
   data.dues = dues;
+  data.duesCrew = duesCrew;
   await writeStarclassData(data);
   revalidatePath("/");
   revalidatePath("/dues");

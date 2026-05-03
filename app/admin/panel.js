@@ -46,10 +46,15 @@ function emptyDuesRow() {
     boat: "",
     owner: "",
     fleet: "",
-    crew: "",
     helmDues: "Pendiente",
-    crewDues: "Pendiente",
     fay: "No",
+  };
+}
+
+function emptyCrewDuesRow() {
+  return {
+    crew: "",
+    crewDues: "Pendiente",
   };
 }
 
@@ -312,9 +317,10 @@ export default function AdminPanel({ initialData }) {
 
   const paidSummary = useMemo(() => {
     const activeHelms = data.dues.filter((dues) => (dues.helmDues || dues.status) !== "Pendiente").length;
-    const activeCrews = data.dues.filter((dues) => dues.crew && (dues.crewDues || "Pendiente") !== "Pendiente").length;
+    const crewRows = Array.isArray(data.duesCrew) ? data.duesCrew : [];
+    const activeCrews = crewRows.filter((dues) => dues.crew && (dues.crewDues || "Pendiente") !== "Pendiente").length;
     return `${activeHelms}/${data.dues.length} timoneles · ${activeCrews} tripulantes activos`;
-  }, [data.dues]);
+  }, [data.dues, data.duesCrew]);
 
   const invalidManualIndexes = useMemo(() => {
     const rows = data.generalRanking || [];
@@ -1570,20 +1576,28 @@ export default function AdminPanel({ initialData }) {
               <span>Dues tripulantes</span>
               <h3>Tripulante y estado</h3>
             </div>
+            <button type="button" onClick={() => patchData({ duesCrew: [...(data.duesCrew || []), emptyCrewDuesRow()] })}>
+              <Plus size={18} />
+              Agregar tripulante
+            </button>
           </div>
           <div className="dues-admin-table dues-admin-table-crew">
             <div className="dues-admin-row dues-admin-row-crew head">
               <span>Tripulante</span>
               <span>Dues Tripulante</span>
+              <span></span>
             </div>
-            {(data.dues || []).map((dues, index) => (
+            {(data.duesCrew || []).map((dues, index) => (
               <div className="dues-admin-row dues-admin-row-crew" key={`crew-${index}`}>
-                <input value={dues.crew || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { crew: event.target.value }) })} />
-                <select value={dues.crewDues || "Pendiente"} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { crewDues: event.target.value }) })}>
+                <input value={dues.crew || ""} onChange={(event) => patchData({ duesCrew: updateArrayItem(data.duesCrew || [], index, { crew: event.target.value }) })} />
+                <select value={dues.crewDues || "Pendiente"} onChange={(event) => patchData({ duesCrew: updateArrayItem(data.duesCrew || [], index, { crewDues: event.target.value }) })}>
                   <option>Pendiente</option>
                   <option>Activo</option>
                   <option>Life</option>
                 </select>
+                <button type="button" className="icon-button" onClick={() => patchData({ duesCrew: (data.duesCrew || []).filter((_, rowIndex) => rowIndex !== index) })} aria-label="Borrar tripulante">
+                  <Trash2 size={16} />
+                </button>
               </div>
             ))}
           </div>
