@@ -110,7 +110,6 @@ export default async function SudamericanoPage() {
     data.gallery?.[0]?.image ||
     "/uploads/flo-7643-copia-1777585679723.jpg";
   const venueUrl = sudamericano.venueUrl || ycaLocationUrl;
-  const eventCardTitle = sudamericano.eventCardTitle || event.title;
 
   return (
     <main>
@@ -141,18 +140,12 @@ export default async function SudamericanoPage() {
             </a>
           </div>
         </div>
-        <aside className="sudamericano-event-card">
-          <div className="sudamericano-event-card-image">
-            <img src={sudamericano.eventCardImage} alt="Imagen destacada del Sudamericano" />
-          </div>
-          <span>{eventCardTitle}</span>
-          <strong>{formatDateRange(event.start, event.end)}</strong>
-          <p>
-            <a href={venueUrl} target="_blank" rel="noopener noreferrer">
-              <MapPin size={18} />
-              {event.location || event.club}
-            </a>
-          </p>
+        <aside className="sudamericano-event-card sudamericano-event-card-only-image">
+          <img
+            className="sudamericano-event-card-image"
+            src="https://pub-c7098b1e4aca47ed92f252e7e56cb219.r2.dev/Sudamericano/Foto%20sudamericano.jpeg"
+            alt="Sudamericano"
+          />
         </aside>
       </section>
 
