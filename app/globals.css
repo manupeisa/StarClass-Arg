@@ -768,6 +768,201 @@ tr:last-child td {
   line-height: 1.7;
 }
 
+.sudamericano-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  gap: clamp(24px, 5vw, 64px);
+  align-items: end;
+  min-height: calc(100vh - 72px);
+  padding: 96px clamp(18px, 5vw, 72px) 64px;
+  color: white;
+  overflow: hidden;
+  background: var(--sea-dark);
+}
+
+.sudamericano-hero-bg,
+.sudamericano-hero-bg::after {
+  position: absolute;
+  inset: 0;
+}
+
+.sudamericano-hero-bg {
+  z-index: 0;
+}
+
+.sudamericano-hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sudamericano-hero-bg::after {
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(5, 24, 31, 0.92), rgba(5, 24, 31, 0.6) 48%, rgba(5, 24, 31, 0.28)),
+    linear-gradient(180deg, rgba(5, 24, 31, 0.2), rgba(5, 24, 31, 0.72));
+}
+
+.sudamericano-hero-content,
+.sudamericano-event-card {
+  position: relative;
+  z-index: 1;
+}
+
+.sudamericano-hero-content {
+  max-width: 920px;
+}
+
+.sudamericano-hero h1 {
+  max-width: 980px;
+  margin: 12px 0 18px;
+  font-family: var(--display-font);
+  font-size: clamp(3rem, 7.2vw, 7rem);
+  line-height: 0.9;
+}
+
+.sudamericano-hero-content > p:not(.kicker) {
+  max-width: 720px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.14rem;
+  line-height: 1.7;
+}
+
+.sudamericano-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.sudamericano-event-card {
+  display: grid;
+  gap: 14px;
+  align-self: center;
+  padding: 28px;
+  color: white;
+  background: rgba(7, 58, 69, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(16px);
+}
+
+.sudamericano-event-card svg {
+  color: var(--gold);
+}
+
+.sudamericano-event-card span {
+  color: var(--gold);
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.sudamericano-event-card strong {
+  font-family: var(--display-font);
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  line-height: 0.95;
+}
+
+.sudamericano-event-card p {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.sudamericano-info {
+  background: #edf2f1;
+}
+
+.sudamericano-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sudamericano-feature-grid article {
+  display: grid;
+  gap: 10px;
+  min-height: 180px;
+  padding: 22px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(16, 32, 37, 0.05);
+}
+
+.sudamericano-feature-grid svg {
+  color: var(--gold);
+}
+
+.sudamericano-feature-grid strong {
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.sudamericano-feature-grid span {
+  color: var(--muted);
+}
+
+.sudamericano-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(360px, 1fr);
+  gap: clamp(24px, 5vw, 64px);
+  align-items: center;
+}
+
+.sudamericano-copy h2 {
+  max-width: 760px;
+  margin: 12px 0 18px;
+  font-family: var(--display-font);
+  font-size: clamp(2.5rem, 5.4vw, 5.4rem);
+  line-height: 0.92;
+}
+
+.sudamericano-copy p:not(.kicker) {
+  max-width: 680px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.sudamericano-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.sudamericano-badges span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--sea-dark);
+  background: #e2ebeb;
+  border-radius: 8px;
+  font-weight: 850;
+}
+
+.sudamericano-image {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--sea-dark);
+  box-shadow: var(--shadow);
+}
+
+.sudamericano-image img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
 .ranking-stats {
   display: flex;
   flex-wrap: wrap;
@@ -1069,16 +1264,15 @@ tr:last-child td {
 
 .championship-detail-section {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 28px;
   align-items: start;
 }
 
 .championship-detail-card {
-  position: sticky;
-  top: 96px;
   display: grid;
   gap: 8px;
+  width: min(100%, 360px);
   padding: 28px;
   color: white;
   background: var(--sea-dark);
@@ -1139,7 +1333,10 @@ tr:last-child td {
   .split,
   .dues-section,
   .championship-detail-section,
-  .latest-championship-card {
+  .latest-championship-card,
+  .sudamericano-hero,
+  .sudamericano-feature-grid,
+  .sudamericano-split {
     grid-template-columns: 1fr;
   }
 
@@ -1226,6 +1423,30 @@ tr:last-child td {
     min-height: calc(100svh - 96px);
     padding: 46px 18px 38px;
     align-items: center;
+  }
+
+  .sudamericano-hero {
+    min-height: calc(100svh - 96px);
+    padding: 54px 18px 38px;
+    align-items: end;
+  }
+
+  .sudamericano-hero h1 {
+    font-size: clamp(2.8rem, 13vw, 4.4rem);
+    line-height: 0.96;
+  }
+
+  .sudamericano-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sudamericano-event-card {
+    padding: 20px;
+  }
+
+  .sudamericano-feature-grid article {
+    min-height: auto;
   }
 
   .hero-content {

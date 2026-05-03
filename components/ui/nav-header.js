@@ -9,6 +9,7 @@ const defaultItems = [
   { label: "Resultados", href: "#resultados" },
   { label: "Fotos", href: "#fotos" },
   { label: "Major", href: "/posicionamiento" },
+  { label: "Sudamericano", href: "/sudamericano" },
   { label: "Comunidad", href: "#comunidad" },
 ];
 
