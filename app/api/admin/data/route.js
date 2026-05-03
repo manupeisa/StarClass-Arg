@@ -25,6 +25,7 @@ export async function PUT(request) {
   revalidatePath("/");
   revalidatePath("/campeonatos");
   revalidatePath("/posicionamiento");
+  revalidatePath("/sudamericano");
 
   return NextResponse.json({ ok: true });
 }

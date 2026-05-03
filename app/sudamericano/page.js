@@ -27,8 +27,37 @@ const ycaLocationUrl = "https://yca.org.ar/event-location/sede-darsena-norte/";
 const ycaBuildingSource =
   "https://commons.wikimedia.org/wiki/File:Predio_del_Yacht_Club_de_Buenos_Aires,_Edificio_del_Yacht_Club.jpg";
 const ycaBuildingLicense = "https://creativecommons.org/licenses/by-sa/3.0/";
-const ycaBuildingImage = "/yca-darsena-norte.jpg";
-const boatsImage = "/uploads/flo-8042-copia-1777585686571.jpg";
+
+const defaultSudamericano = {
+  heroKicker: "Campeonato Sudamericano de StarClass",
+  heroTitle: "Un nuevo evento de la clase con todos los condimentos que ofrece Buenos Aires.",
+  heroText:
+    "Cuatro dias para reunir talento, tradicion y competencia de alto nivel en la clase Star. La cuenta regresiva ya empezo.",
+  heroImage: "",
+  venueUrl: ycaLocationUrl,
+  eventCardTitle: "",
+  infoEyebrow: "Buenos Aires 2026",
+  infoTitle: "Un campeonato para mirar de cerca",
+  infoText:
+    "El Sudamericano es una oportunidad para ver a la clase Star en su mejor formato: tripulaciones finas, decisiones tacticas exigentes y una cancha que premia experiencia.",
+  venueKicker: "Sede",
+  venueTitle: "YCA Darsena Norte como punto de encuentro.",
+  venueText:
+    "La sede historica del Yacht Club Argentino suma identidad portuaria, cercania con la ciudad y una base ideal para recibir a las tripulaciones del Sudamericano.",
+  venueButtonLabel: "Ver sede del club",
+  venueImage: "/yca-darsena-norte.jpg",
+  venueImageCredit: "Jrivell",
+  venueImageSource: ycaBuildingSource,
+  venueImageLicense: ycaBuildingLicense,
+  splitKicker: "Expectativa",
+  splitTitle: "Una cita regional con identidad de flota.",
+  splitText:
+    "La Darsena prepara un escenario ideal para recibir a timoneles y tripulantes de la region. El campeonato combina intensidad deportiva, comunidad y el valor historico de una clase que sigue convocando a los mejores navegantes.",
+  splitImage: "/uploads/flo-8042-copia-1777585686571.jpg",
+  badgeWater: "Rio de la Plata",
+  badgeDate: "Diciembre 2026",
+  badgeVenue: "YCA Darsena",
+};
 
 const dateFormatter = new Intl.DateTimeFormat("es-AR", {
   day: "2-digit",
@@ -73,7 +102,14 @@ export default async function SudamericanoPage() {
     start: "2026-12-05",
     end: "2026-12-08",
   };
-  const heroImage = data.hero?.images?.[0] || data.gallery?.[0]?.image || "/uploads/flo-7643-copia-1777585679723.jpg";
+  const sudamericano = { ...defaultSudamericano, ...(data.sudamericano || {}) };
+  const heroImage =
+    sudamericano.heroImage ||
+    data.hero?.images?.[0] ||
+    data.gallery?.[0]?.image ||
+    "/uploads/flo-7643-copia-1777585679723.jpg";
+  const venueUrl = sudamericano.venueUrl || ycaLocationUrl;
+  const eventCardTitle = sudamericano.eventCardTitle || event.title;
 
   return (
     <main>
@@ -90,12 +126,9 @@ export default async function SudamericanoPage() {
           <img src={heroImage} alt="" />
         </div>
         <div className="sudamericano-hero-content">
-          <p className="kicker">Campeonato Sudamericano de StarClass</p>
-          <h1>Un nuevo evento de la clase con todos los condimentos que ofrece Buenos Aires.</h1>
-          <p>
-            Cuatro dias para reunir talento, tradicion y competencia de alto nivel en la clase Star.
-            La cuenta regresiva ya empezo.
-          </p>
+          <p className="kicker">{sudamericano.heroKicker}</p>
+          <h1>{sudamericano.heroTitle}</h1>
+          <p>{sudamericano.heroText}</p>
           <div className="sudamericano-actions">
             <a className="button primary" href="/#calendario">
               <CalendarDays size={18} />
@@ -109,10 +142,10 @@ export default async function SudamericanoPage() {
         </div>
         <aside className="sudamericano-event-card">
           <Trophy size={28} />
-          <span>{event.title}</span>
+          <span>{eventCardTitle}</span>
           <strong>{formatDateRange(event.start, event.end)}</strong>
           <p>
-            <a href={ycaLocationUrl} target="_blank" rel="noopener noreferrer">
+            <a href={venueUrl} target="_blank" rel="noopener noreferrer">
               <MapPin size={18} />
               {event.location || event.club}
             </a>
@@ -122,12 +155,9 @@ export default async function SudamericanoPage() {
 
       <section className="section sudamericano-info" id="expectativa">
         <div className="section-header">
-          <span>Buenos Aires 2026</span>
-          <h2>Un campeonato para mirar de cerca</h2>
-          <p>
-            El Sudamericano es una oportunidad para ver a la clase Star en su mejor formato:
-            tripulaciones finas, decisiones tacticas exigentes y una cancha que premia experiencia.
-          </p>
+          <span>{sudamericano.infoEyebrow}</span>
+          <h2>{sudamericano.infoTitle}</h2>
+          <p>{sudamericano.infoText}</p>
         </div>
         <div className="sudamericano-feature-grid">
           <article>
@@ -150,51 +180,44 @@ export default async function SudamericanoPage() {
 
       <section className="section sudamericano-venue">
         <figure className="sudamericano-venue-media">
-          <img src={ycaBuildingImage} alt="Edificio del Yacht Club Argentino en Darsena Norte" />
+          <img src={sudamericano.venueImage} alt="Edificio del Yacht Club Argentino en Darsena Norte" />
           <figcaption>
-            Foto: Jrivell,{" "}
-            <a href={ycaBuildingSource} target="_blank" rel="noopener noreferrer">
+            Foto: {sudamericano.venueImageCredit},{" "}
+            <a href={sudamericano.venueImageSource} target="_blank" rel="noopener noreferrer">
               Wikimedia Commons
             </a>{" "}
-            <a href={ycaBuildingLicense} target="_blank" rel="noopener noreferrer">
+            <a href={sudamericano.venueImageLicense} target="_blank" rel="noopener noreferrer">
               CC BY-SA 3.0
             </a>
           </figcaption>
         </figure>
         <div className="sudamericano-venue-copy">
-          <p className="kicker">Sede</p>
-          <h2>YCA Darsena Norte como punto de encuentro.</h2>
-          <p>
-            La sede historica del Yacht Club Argentino suma identidad portuaria, cercania con la
-            ciudad y una base ideal para recibir a las tripulaciones del Sudamericano.
-          </p>
-          <a className="button ghost" href={ycaLocationUrl} target="_blank" rel="noopener noreferrer">
+          <p className="kicker">{sudamericano.venueKicker}</p>
+          <h2>{sudamericano.venueTitle}</h2>
+          <p>{sudamericano.venueText}</p>
+          <a className="button ghost" href={venueUrl} target="_blank" rel="noopener noreferrer">
             <Anchor size={18} />
-            Ver sede del club
+            {sudamericano.venueButtonLabel}
           </a>
         </div>
       </section>
 
       <section className="section sudamericano-split">
         <div className="sudamericano-copy">
-          <p className="kicker">Expectativa</p>
-          <h2>Una cita regional con identidad de flota.</h2>
-          <p>
-            La Darsena prepara un escenario ideal para recibir a timoneles y tripulantes de la region.
-            El campeonato combina intensidad deportiva, comunidad y el valor historico de una clase
-            que sigue convocando a los mejores navegantes.
-          </p>
+          <p className="kicker">{sudamericano.splitKicker}</p>
+          <h2>{sudamericano.splitTitle}</h2>
+          <p>{sudamericano.splitText}</p>
           <div className="sudamericano-badges">
-            <span><Waves size={16} /> Rio de la Plata</span>
-            <span><Clock size={16} /> Diciembre 2026</span>
-            <a href={ycaLocationUrl} target="_blank" rel="noopener noreferrer">
+            <span><Waves size={16} /> {sudamericano.badgeWater}</span>
+            <span><Clock size={16} /> {sudamericano.badgeDate}</span>
+            <a href={venueUrl} target="_blank" rel="noopener noreferrer">
               <Anchor size={16} />
-              YCA Darsena
+              {sudamericano.badgeVenue}
             </a>
           </div>
         </div>
         <figure className="sudamericano-image">
-          <img src={boatsImage} alt="Barco Star navegando en el agua" />
+          <img src={sudamericano.splitImage} alt="Barco Star navegando en el agua" />
         </figure>
       </section>
     </main>

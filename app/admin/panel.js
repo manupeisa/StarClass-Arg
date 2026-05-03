@@ -25,6 +25,7 @@ const uploadTargetBytes = 3.8 * 1024 * 1024;
 const adminSections = [
   { id: "site-settings", label: "Ajustes" },
   { id: "hero", label: "Hero" },
+  { id: "sudamericano", label: "Sudamericano" },
   { id: "posicionamiento", label: "General" },
   { id: "campeonatos", label: "Campeonatos" },
   { id: "galeria", label: "Fotos" },
@@ -53,6 +54,37 @@ function normalizeHeroImages(images) {
     })
     .filter(Boolean);
 }
+
+const defaultSudamericano = {
+  heroKicker: "Campeonato Sudamericano de StarClass",
+  heroTitle: "Un nuevo evento de la clase con todos los condimentos que ofrece Buenos Aires.",
+  heroText:
+    "Cuatro dias para reunir talento, tradicion y competencia de alto nivel en la clase Star. La cuenta regresiva ya empezo.",
+  heroImage: "",
+  venueUrl: "https://yca.org.ar/event-location/sede-darsena-norte/",
+  eventCardTitle: "Sudamericano 2026",
+  infoEyebrow: "Buenos Aires 2026",
+  infoTitle: "Un campeonato para mirar de cerca",
+  infoText:
+    "El Sudamericano es una oportunidad para ver a la clase Star en su mejor formato: tripulaciones finas, decisiones tacticas exigentes y una cancha que premia experiencia.",
+  venueKicker: "Sede",
+  venueTitle: "YCA Darsena Norte como punto de encuentro.",
+  venueText:
+    "La sede historica del Yacht Club Argentino suma identidad portuaria, cercania con la ciudad y una base ideal para recibir a las tripulaciones del Sudamericano.",
+  venueButtonLabel: "Ver sede del club",
+  venueImage: "/yca-darsena-norte.jpg",
+  venueImageCredit: "Jrivell",
+  venueImageSource: "https://commons.wikimedia.org/wiki/File:Predio_del_Yacht_Club_de_Buenos_Aires,_Edificio_del_Yacht_Club.jpg",
+  venueImageLicense: "https://creativecommons.org/licenses/by-sa/3.0/",
+  splitKicker: "Expectativa",
+  splitTitle: "Una cita regional con identidad de flota.",
+  splitText:
+    "La Darsena prepara un escenario ideal para recibir a timoneles y tripulantes de la region. El campeonato combina intensidad deportiva, comunidad y el valor historico de una clase que sigue convocando a los mejores navegantes.",
+  splitImage: "/uploads/flo-8042-copia-1777585686571.jpg",
+  badgeWater: "Rio de la Plata",
+  badgeDate: "Diciembre 2026",
+  badgeVenue: "YCA Darsena",
+};
 
 function emptyEvent() {
   return {
@@ -246,6 +278,7 @@ export default function AdminPanel({ initialData }) {
   );
   const generalMode = data.generalRankingMode || "auto";
   const activeSection = adminSections.find((section) => section.id === activeAdminSection) || adminSections[1];
+  const sudamericano = { ...defaultSudamericano, ...(data.sudamericano || {}) };
 
   useEffect(() => {
     function syncFromHash() {
@@ -314,6 +347,44 @@ export default function AdminPanel({ initialData }) {
         ...(patch.images ? { images: normalizeHeroImages(patch.images) } : patch),
       },
     }));
+  }
+
+  function patchSudamericano(patch) {
+    setData((current) => ({
+      ...current,
+      sudamericano: {
+        ...defaultSudamericano,
+        ...(current.sudamericano || {}),
+        ...patch,
+      },
+    }));
+  }
+
+  async function uploadSudamericanoImage(file, field) {
+    if (!file) return;
+
+    try {
+      const body = await postImageFile(file);
+
+      if (body?.url) {
+        const nextData = {
+          ...data,
+          sudamericano: {
+            ...defaultSudamericano,
+            ...(data.sudamericano || {}),
+            [field]: body.url,
+          },
+        };
+        setData(nextData);
+        await saveData(nextData);
+        setMessage("Imagen del Sudamericano actualizada.");
+      } else {
+        setMessage(body.message || "No se pudo subir la imagen.");
+      }
+    } catch (err) {
+      console.error("Upload sudamericano image error:", err);
+      setMessage(`Error al subir imagen del Sudamericano: ${err.message}`);
+    }
   }
 
   async function uploadHeroImage(file) {
@@ -854,6 +925,155 @@ export default function AdminPanel({ initialData }) {
               </button>
             </article>
           </div>
+        </section>
+
+        <section className={activeAdminSection === "sudamericano" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="sudamericano">
+          <div className="admin-section-title">
+            <div>
+              <span>Página especial</span>
+              <h3>Sudamericano</h3>
+            </div>
+            <a className="admin-header-button" href="/sudamericano" target="_blank" rel="noopener noreferrer">
+              Ver página
+            </a>
+          </div>
+          <p className="admin-help">
+            Desde acá podés cambiar textos, imágenes y links de la página del Sudamericano sin tocar código.
+          </p>
+
+          <div className="form-grid three">
+            <label>
+              Etiqueta del hero
+              <input value={sudamericano.heroKicker} onChange={(event) => patchSudamericano({ heroKicker: event.target.value })} />
+            </label>
+            <label>
+              Título de tarjeta
+              <input value={sudamericano.eventCardTitle} onChange={(event) => patchSudamericano({ eventCardTitle: event.target.value })} />
+            </label>
+            <label>
+              Link YCA Darsena
+              <input value={sudamericano.venueUrl} onChange={(event) => patchSudamericano({ venueUrl: event.target.value })} />
+            </label>
+          </div>
+          <label>
+            Título principal
+            <textarea value={sudamericano.heroTitle} onChange={(event) => patchSudamericano({ heroTitle: event.target.value })} />
+          </label>
+          <label>
+            Texto principal
+            <textarea value={sudamericano.heroText} onChange={(event) => patchSudamericano({ heroText: event.target.value })} />
+          </label>
+
+          <div className="photo-admin-grid">
+            {[
+              { field: "heroImage", label: "Imagen hero", value: sudamericano.heroImage },
+              { field: "venueImage", label: "Imagen edificio YCA", value: sudamericano.venueImage },
+              { field: "splitImage", label: "Imagen barcos en agua", value: sudamericano.splitImage },
+            ].map((item) => (
+              <article key={item.field}>
+                {item.value ? <img src={item.value} alt="" /> : <div className="empty-photo">Sin imagen</div>}
+                <label>
+                  {item.label}
+                  <input value={item.value} onChange={(event) => patchSudamericano({ [item.field]: event.target.value })} />
+                </label>
+                <label className="file-label">
+                  Subir imagen
+                  <input type="file" accept="image/*" onChange={(event) => uploadSudamericanoImage(event.target.files?.[0], item.field)} />
+                </label>
+              </article>
+            ))}
+          </div>
+
+          <div className="admin-section-title compact">
+            <div>
+              <span>Bloque informativo</span>
+              <h3>Textos intermedios</h3>
+            </div>
+          </div>
+          <div className="form-grid three">
+            <label>
+              Etiqueta
+              <input value={sudamericano.infoEyebrow} onChange={(event) => patchSudamericano({ infoEyebrow: event.target.value })} />
+            </label>
+            <label>
+              Título
+              <input value={sudamericano.infoTitle} onChange={(event) => patchSudamericano({ infoTitle: event.target.value })} />
+            </label>
+            <label>
+              Botón sede
+              <input value={sudamericano.venueButtonLabel} onChange={(event) => patchSudamericano({ venueButtonLabel: event.target.value })} />
+            </label>
+          </div>
+          <label>
+            Texto
+            <textarea value={sudamericano.infoText} onChange={(event) => patchSudamericano({ infoText: event.target.value })} />
+          </label>
+
+          <div className="admin-section-title compact">
+            <div>
+              <span>Sede</span>
+              <h3>YCA Darsena Norte</h3>
+            </div>
+          </div>
+          <div className="form-grid three">
+            <label>
+              Etiqueta sede
+              <input value={sudamericano.venueKicker} onChange={(event) => patchSudamericano({ venueKicker: event.target.value })} />
+            </label>
+            <label>
+              Crédito foto
+              <input value={sudamericano.venueImageCredit} onChange={(event) => patchSudamericano({ venueImageCredit: event.target.value })} />
+            </label>
+            <label>
+              Licencia foto
+              <input value={sudamericano.venueImageLicense} onChange={(event) => patchSudamericano({ venueImageLicense: event.target.value })} />
+            </label>
+          </div>
+          <label>
+            Título sede
+            <input value={sudamericano.venueTitle} onChange={(event) => patchSudamericano({ venueTitle: event.target.value })} />
+          </label>
+          <label>
+            Texto sede
+            <textarea value={sudamericano.venueText} onChange={(event) => patchSudamericano({ venueText: event.target.value })} />
+          </label>
+          <label>
+            Fuente foto edificio
+            <input value={sudamericano.venueImageSource} onChange={(event) => patchSudamericano({ venueImageSource: event.target.value })} />
+          </label>
+
+          <div className="admin-section-title compact">
+            <div>
+              <span>Expectativa</span>
+              <h3>Bloque final</h3>
+            </div>
+          </div>
+          <div className="form-grid three">
+            <label>
+              Etiqueta
+              <input value={sudamericano.splitKicker} onChange={(event) => patchSudamericano({ splitKicker: event.target.value })} />
+            </label>
+            <label>
+              Badge agua
+              <input value={sudamericano.badgeWater} onChange={(event) => patchSudamericano({ badgeWater: event.target.value })} />
+            </label>
+            <label>
+              Badge fecha
+              <input value={sudamericano.badgeDate} onChange={(event) => patchSudamericano({ badgeDate: event.target.value })} />
+            </label>
+          </div>
+          <label>
+            Título expectativa
+            <input value={sudamericano.splitTitle} onChange={(event) => patchSudamericano({ splitTitle: event.target.value })} />
+          </label>
+          <label>
+            Texto expectativa
+            <textarea value={sudamericano.splitText} onChange={(event) => patchSudamericano({ splitText: event.target.value })} />
+          </label>
+          <label>
+            Badge sede
+            <input value={sudamericano.badgeVenue} onChange={(event) => patchSudamericano({ badgeVenue: event.target.value })} />
+          </label>
         </section>
 
         <section className={activeAdminSection === "posicionamiento" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="posicionamiento">

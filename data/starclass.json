@@ -172,6 +172,32 @@
       "link": ""
     }
   ],
+  "sudamericano": {
+    "heroKicker": "Campeonato Sudamericano de StarClass",
+    "heroTitle": "Un nuevo evento de la clase con todos los condimentos que ofrece Buenos Aires.",
+    "heroText": "Cuatro dias para reunir talento, tradicion y competencia de alto nivel en la clase Star. La cuenta regresiva ya empezo.",
+    "heroImage": "",
+    "venueUrl": "https://yca.org.ar/event-location/sede-darsena-norte/",
+    "eventCardTitle": "Sudamericano 2026",
+    "infoEyebrow": "Buenos Aires 2026",
+    "infoTitle": "Un campeonato para mirar de cerca",
+    "infoText": "El Sudamericano es una oportunidad para ver a la clase Star en su mejor formato: tripulaciones finas, decisiones tacticas exigentes y una cancha que premia experiencia.",
+    "venueKicker": "Sede",
+    "venueTitle": "YCA Darsena Norte como punto de encuentro.",
+    "venueText": "La sede historica del Yacht Club Argentino suma identidad portuaria, cercania con la ciudad y una base ideal para recibir a las tripulaciones del Sudamericano.",
+    "venueButtonLabel": "Ver sede del club",
+    "venueImage": "/yca-darsena-norte.jpg",
+    "venueImageCredit": "Jrivell",
+    "venueImageSource": "https://commons.wikimedia.org/wiki/File:Predio_del_Yacht_Club_de_Buenos_Aires,_Edificio_del_Yacht_Club.jpg",
+    "venueImageLicense": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "splitKicker": "Expectativa",
+    "splitTitle": "Una cita regional con identidad de flota.",
+    "splitText": "La Darsena prepara un escenario ideal para recibir a timoneles y tripulantes de la region. El campeonato combina intensidad deportiva, comunidad y el valor historico de una clase que sigue convocando a los mejores navegantes.",
+    "splitImage": "/uploads/flo-8042-copia-1777585686571.jpg",
+    "badgeWater": "Rio de la Plata",
+    "badgeDate": "Diciembre 2026",
+    "badgeVenue": "YCA Darsena"
+  },
   "championships": [
     {
       "name": "San Isidro Labrador ",
