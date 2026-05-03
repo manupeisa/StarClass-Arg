@@ -15,6 +15,9 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
+      <head>
+        <link rel="icon" href="/district-18-logo-final.png" />
+      </head>
       <body>
         {children}
         <Footer />
