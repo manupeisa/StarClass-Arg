@@ -179,7 +179,7 @@ export default async function Home() {
     return isUpcomingCompetition(championship, today);
   });
   const latest = getLatestRanChampionship(data.championships, today);
-  const upcomingEvents = [
+    const upcomingEvents = [
     ...data.events.map((event) => ({ ...event, source: "event" })),
     ...futureChampionships.map((championship) => ({
       title: championship.name,
@@ -189,7 +189,7 @@ export default async function Home() {
       start: championship.raceDates?.[0] || championship.startDate,
       end: championship.raceDates?.[championship.raceDates.length - 1] || championship.endDate,
       raceDates: championship.raceDates,
-      link: championship.link || `/campeonatos/${championshipSlug(championship, sortedChampionships.indexOf(championship))}`,
+        link: championship.link || (championship.name && championship.name.toLowerCase().includes("sudamericano") ? "/sudamericano" : `/campeonatos/${championshipSlug(championship, sortedChampionships.indexOf(championship))}`),
       source: "championship",
     })),
   ]

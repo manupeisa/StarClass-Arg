@@ -181,15 +181,6 @@ export default async function SudamericanoPage() {
       <section className="section sudamericano-venue">
         <figure className="sudamericano-venue-media">
           <img src={sudamericano.venueImage} alt="Edificio del Yacht Club Argentino en Darsena Norte" />
-          <figcaption>
-            Foto: {sudamericano.venueImageCredit},{" "}
-            <a href={sudamericano.venueImageSource} target="_blank" rel="noopener noreferrer">
-              Wikimedia Commons
-            </a>{" "}
-            <a href={sudamericano.venueImageLicense} target="_blank" rel="noopener noreferrer">
-              CC BY-SA 3.0
-            </a>
-          </figcaption>
         </figure>
         <div className="sudamericano-venue-copy">
           <p className="kicker">{sudamericano.venueKicker}</p>

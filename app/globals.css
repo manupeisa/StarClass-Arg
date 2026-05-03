@@ -772,10 +772,10 @@ tr:last-child td {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
-  gap: clamp(24px, 5vw, 64px);
+  gap: clamp(18px, 4vw, 48px);
   align-items: end;
-  min-height: calc(100vh - 72px);
-  padding: 96px clamp(18px, 5vw, 72px) 64px;
+  min-height: calc(80vh - 72px);
+  padding: 72px clamp(18px, 5vw, 72px) 48px;
   color: white;
   overflow: hidden;
   background: var(--sea-dark);
