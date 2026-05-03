@@ -5,11 +5,6 @@ import Footer from "../components/ui/footer";
 export const metadata = {
   title: "StarClass Argentina",
   description: "Calendario, resultados, rankings y comunidad argentina de la Clase Star.",
-  icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/apple-icon.png",
-  },
 };
 
 export const viewport = {
@@ -20,9 +15,6 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <head>
-        <link rel="icon" href="/icon.png" />
-      </head>
       <body>
         {children}
         <Footer />
