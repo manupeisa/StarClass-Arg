@@ -311,8 +311,9 @@ export default function AdminPanel({ initialData }) {
   }
 
   const paidSummary = useMemo(() => {
-    const paid = data.dues.filter((dues) => (dues.helmDues || dues.status) !== "Pendiente").length;
-    return `${paid}/${data.dues.length} timoneles activos`;
+    const activeHelms = data.dues.filter((dues) => (dues.helmDues || dues.status) !== "Pendiente").length;
+    const activeCrews = data.dues.filter((dues) => dues.crew && (dues.crewDues || "Pendiente") !== "Pendiente").length;
+    return `${activeHelms}/${data.dues.length} timoneles · ${activeCrews} tripulantes activos`;
   }, [data.dues]);
 
   const invalidManualIndexes = useMemo(() => {
@@ -1527,30 +1528,28 @@ export default function AdminPanel({ initialData }) {
               </label>
             </div>
           </div>
-          <p className="admin-help">Editá Barco, Propietario, Flota, Tripulante, Dues Timonel, Dues Tripulantes y FAY. Guardá con el botón superior.</p>
+          <p className="admin-help">La página pública separa estos datos en dos tablas: timoneles y tripulantes. Guardá con el botón superior.</p>
+          <div className="admin-section-title compact">
+            <div>
+              <span>Dues timoneles</span>
+              <h3>Barco, timonel, flota, Dues y FAY</h3>
+            </div>
+          </div>
           <div className="dues-admin-table">
-            <div className="dues-admin-row head">
+            <div className="dues-admin-row dues-admin-row-helm head">
               <span>Barco</span>
-              <span>Propietario</span>
+              <span>Timonel</span>
               <span>Flota</span>
-              <span>Tripulante</span>
               <span>Dues Timonel</span>
-              <span>Dues Tripulantes</span>
               <span>FAY</span>
               <span></span>
             </div>
             {(data.dues || []).map((dues, index) => (
-              <div className="dues-admin-row" key={index}>
+              <div className="dues-admin-row dues-admin-row-helm" key={index}>
                 <input value={dues.boat || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { boat: event.target.value }) })} />
                 <input value={dues.owner || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { owner: event.target.value }) })} />
                 <input value={dues.fleet || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { fleet: event.target.value }) })} />
-                <input value={dues.crew || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { crew: event.target.value }) })} />
                 <select value={dues.helmDues || dues.status || "Pendiente"} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { helmDues: event.target.value }) })}>
-                  <option>Pendiente</option>
-                  <option>Activo</option>
-                  <option>Life</option>
-                </select>
-                <select value={dues.crewDues || "Pendiente"} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { crewDues: event.target.value }) })}>
                   <option>Pendiente</option>
                   <option>Activo</option>
                   <option>Life</option>
@@ -1562,6 +1561,29 @@ export default function AdminPanel({ initialData }) {
                 <button type="button" className="icon-button" onClick={() => patchData({ dues: data.dues.filter((_, rowIndex) => rowIndex !== index) })} aria-label="Borrar fila">
                   <Trash2 size={16} />
                 </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="admin-section-title compact">
+            <div>
+              <span>Dues tripulantes</span>
+              <h3>Tripulante y estado</h3>
+            </div>
+          </div>
+          <div className="dues-admin-table dues-admin-table-crew">
+            <div className="dues-admin-row dues-admin-row-crew head">
+              <span>Tripulante</span>
+              <span>Dues Tripulante</span>
+            </div>
+            {(data.dues || []).map((dues, index) => (
+              <div className="dues-admin-row dues-admin-row-crew" key={`crew-${index}`}>
+                <input value={dues.crew || ""} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { crew: event.target.value }) })} />
+                <select value={dues.crewDues || "Pendiente"} onChange={(event) => patchData({ dues: updateArrayItem(data.dues, index, { crewDues: event.target.value }) })}>
+                  <option>Pendiente</option>
+                  <option>Activo</option>
+                  <option>Life</option>
+                </select>
               </div>
             ))}
           </div>

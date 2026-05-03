@@ -1338,7 +1338,16 @@ tr:last-child td {
 }
 
 .dues-table-section {
+  display: grid;
+  gap: 18px;
   background: #f8faf8;
+}
+
+.dues-table-heading h2 {
+  margin: 8px 0 0;
+  font-family: var(--display-font);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 0.96;
 }
 
 .dues-table-card {
@@ -1351,8 +1360,12 @@ tr:last-child td {
 
 .dues-table {
   width: 100%;
-  min-width: 980px;
+  min-width: 760px;
   border-collapse: collapse;
+}
+
+.dues-crew-table {
+  min-width: 520px;
 }
 
 .dues-table th,
@@ -2448,10 +2461,19 @@ button:disabled {
 
 .dues-admin-row {
   display: grid;
-  grid-template-columns: minmax(110px, 0.8fr) minmax(150px, 1fr) minmax(120px, 0.8fr) minmax(150px, 1fr) 150px 170px 92px 44px;
   gap: 8px;
   align-items: center;
-  min-width: 1040px;
+}
+
+.dues-admin-row-helm {
+  grid-template-columns: minmax(110px, 0.8fr) minmax(150px, 1fr) minmax(120px, 0.8fr) 150px 92px 44px;
+  min-width: 760px;
+}
+
+.dues-admin-row-crew {
+  grid-template-columns: minmax(220px, 1fr) 170px;
+  max-width: 560px;
+  min-width: 420px;
 }
 
 .dues-admin-row.head {

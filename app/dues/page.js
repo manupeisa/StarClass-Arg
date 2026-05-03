@@ -42,6 +42,8 @@ function StatusBadge({ value }) {
 export default async function DuesPage() {
   const data = await readStarclassData();
   const duesRows = (data.dues || []).map(normalizeDues);
+  const activeHelms = duesRows.filter((row) => row.helmDues !== "Pendiente").length;
+  const activeCrews = duesRows.filter((row) => row.crew && row.crewDues !== "Pendiente").length;
 
   return (
     <main>
@@ -72,23 +74,30 @@ export default async function DuesPage() {
           </article>
           <article>
             <CheckCircle2 size={20} />
-            <strong>{duesRows.filter((row) => row.helmDues !== "Pendiente").length}</strong>
+            <strong>{activeHelms}</strong>
             <span>timoneles activos</span>
+          </article>
+          <article>
+            <CheckCircle2 size={20} />
+            <strong>{activeCrews}</strong>
+            <span>tripulantes activos</span>
           </article>
         </div>
       </section>
 
       <section className="section dues-table-section">
+        <div className="dues-table-heading">
+          <p className="kicker">Dues timoneles</p>
+          <h2>Estado por barco</h2>
+        </div>
         <div className="dues-table-card">
           <table className="dues-table">
             <thead>
               <tr>
                 <th>Barco</th>
-                <th>Propietario</th>
+                <th>Timonel</th>
                 <th>Flota</th>
-                <th>Tripulante</th>
                 <th>Dues Timonel</th>
-                <th>Dues Tripulantes</th>
                 <th>FAY</th>
               </tr>
             </thead>
@@ -98,10 +107,31 @@ export default async function DuesPage() {
                   <td>{row.boat || "-"}</td>
                   <td>{row.owner || "-"}</td>
                   <td>{row.fleet || "-"}</td>
-                  <td>{row.crew || "-"}</td>
                   <td><StatusBadge value={row.helmDues} /></td>
-                  <td><StatusBadge value={row.crewDues} /></td>
                   <td><StatusBadge value={row.fay} /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="dues-table-heading">
+          <p className="kicker">Dues tripulantes</p>
+          <h2>Estado por tripulante</h2>
+        </div>
+        <div className="dues-table-card dues-crew-table-card">
+          <table className="dues-table dues-crew-table">
+            <thead>
+              <tr>
+                <th>Tripulante</th>
+                <th>Dues Tripulante</th>
+              </tr>
+            </thead>
+            <tbody>
+              {duesRows.map((row, index) => (
+                <tr key={`${row.crew || "tripulante"}-${index}`}>
+                  <td>{row.crew || "-"}</td>
+                  <td><StatusBadge value={row.crewDues} /></td>
                 </tr>
               ))}
             </tbody>
