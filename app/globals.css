@@ -1389,6 +1389,11 @@ tr:last-child td {
   background: #e3f5e9;
 }
 
+.dues-status.is-life {
+  color: #85610b;
+  background: #fff3c9;
+}
+
 .dues-status.is-pending {
   color: #9f2929;
   background: #fee7e7;

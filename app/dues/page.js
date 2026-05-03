@@ -27,11 +27,12 @@ function normalizeDues(row) {
 }
 
 function StatusBadge({ value }) {
-  const isOk = value === "Activo" || value === "Life" || value === "Si";
-  const Icon = isOk ? CheckCircle2 : ShieldCheck;
+  const isPending = value === "Pendiente" || value === "No";
+  const statusClass = value === "Life" ? "is-life" : isPending ? "is-pending" : "is-ok";
+  const Icon = isPending ? ShieldCheck : CheckCircle2;
 
   return (
-    <span className={isOk ? "dues-status is-ok" : "dues-status is-pending"}>
+    <span className={`dues-status ${statusClass}`}>
       <Icon size={16} />
       {value}
     </span>

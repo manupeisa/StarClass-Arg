@@ -2,11 +2,9 @@
   Anchor,
   ArrowRight,
   CalendarDays,
-  CheckCircle2,
   ExternalLink,
   Instagram,
   Medal,
-  ShieldCheck,
   Trophy,
 } from "lucide-react";
 import { readStarclassData } from "../lib/starclass-data";
@@ -341,20 +339,8 @@ export default async function Home() {
           <SectionHeader eyebrow="Administración" title="Pagos de Dues">
             Estado visible para ordenar la informacion de la flota.
           </SectionHeader>
-          <div className="dues-grid">
-            {data.dues.map((dues) => (
-              <article className={dues.helmDues === "Pendiente" ? "dues pending" : "dues paid"} key={dues.boat}>
-                {dues.helmDues === "Pendiente" ? <ShieldCheck size={18} /> : <CheckCircle2 size={18} />}
-                <div>
-                  <strong>{dues.boat}</strong>
-                  <span>{dues.owner || dues.proprietario}</span>
-                </div>
-                <em>{dues.helmDues || dues.status}</em>
-              </article>
-            ))}
-          </div>
           <a className="dues-more-link" href="/dues">
-            Ver más
+            Ver pagos
             <ArrowRight size={18} />
           </a>
         </div>
