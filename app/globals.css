@@ -873,20 +873,6 @@ tr:last-child td {
   backdrop-filter: blur(16px);
 }
 
-.sudamericano-event-card-logo {
-  width: 100%;
-  max-width: 220px;
-  overflow: hidden;
-  border-radius: 18px;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.24);
-}
-
-.sudamericano-event-card-logo img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 .sudamericano-event-card-image {
   width: 100%;
   overflow: hidden;

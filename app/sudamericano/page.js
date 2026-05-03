@@ -49,7 +49,6 @@ const defaultSudamericano = {
   venueImageCredit: "Jrivell",
   venueImageSource: ycaBuildingSource,
   venueImageLicense: ycaBuildingLicense,
-  eventCardLogo: "/district-18-logo-final.png",
   eventCardImage: "/uploads/flo-8049-copia-1777586506711.jpg",
   splitKicker: "Expectativa",
   splitTitle: "Una cita regional con identidad de flota.",
@@ -143,14 +142,11 @@ export default async function SudamericanoPage() {
           </div>
         </div>
         <aside className="sudamericano-event-card">
-          <div className="sudamericano-event-card-logo">
-            <img src={sudamericano.eventCardLogo} alt="Logo del Sudamericano" />
-          </div>
-          <span>{eventCardTitle}</span>
-          <strong>{formatDateRange(event.start, event.end)}</strong>
           <div className="sudamericano-event-card-image">
             <img src={sudamericano.eventCardImage} alt="Imagen destacada del Sudamericano" />
           </div>
+          <span>{eventCardTitle}</span>
+          <strong>{formatDateRange(event.start, event.end)}</strong>
           <p>
             <a href={venueUrl} target="_blank" rel="noopener noreferrer">
               <MapPin size={18} />
