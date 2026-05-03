@@ -128,16 +128,24 @@ function getEventTypeClass(type) {
 function EventCard({ event }) {
   const className = `event-card ${getEventTypeClass(event.type)}${event.link ? " event-card-link" : ""}`;
   const hasLink = Boolean(event.link);
+  const hasMediaImage = Boolean(event.mediaImage);
   const content = (
     <>
-      <div className="event-date">
-        <span>{formatDate(event.start)}</span>
-        <small>{formatDate(event.end)}</small>
+      <div className={hasMediaImage ? "event-date event-date-media" : "event-date"}>
+        {hasMediaImage ? (
+          <img src={event.mediaImage} alt="" />
+        ) : (
+          <>
+            <span>{formatDate(event.start)}</span>
+            <small>{formatDate(event.end)}</small>
+          </>
+        )}
       </div>
       <div>
         <p>{event.type}</p>
         <h3>{event.title}</h3>
         <span>{event.club}{" · "}{event.location}</span>
+        {hasMediaImage ? <strong className="event-range-inline">{formatDateRange(event.start, event.end)}</strong> : null}
         {hasLink ? <span className="button ghost event-register-link">Inscribirse</span> : null}
       </div>
     </>
@@ -179,7 +187,7 @@ export default async function Home() {
     return isUpcomingCompetition(championship, today);
   });
   const latest = getLatestRanChampionship(data.championships, today);
-    const upcomingEvents = [
+  const upcomingEvents = [
     ...data.events.map((event) => ({ ...event, source: "event" })),
     ...futureChampionships.map((championship) => ({
       title: championship.name,
@@ -189,7 +197,8 @@ export default async function Home() {
       start: championship.raceDates?.[0] || championship.startDate,
       end: championship.raceDates?.[championship.raceDates.length - 1] || championship.endDate,
       raceDates: championship.raceDates,
-        link: championship.link || (championship.name && championship.name.toLowerCase().includes("sudamericano") ? "/sudamericano" : `/campeonatos/${championshipSlug(championship, sortedChampionships.indexOf(championship))}`),
+      mediaImage: championship.name?.toLowerCase().includes("sudamericano") ? "/uploads/flo-8049-copia-1777586506711.jpg" : "",
+      link: championship.link || (championship.name && championship.name.toLowerCase().includes("sudamericano") ? "/sudamericano" : `/campeonatos/${championshipSlug(championship, sortedChampionships.indexOf(championship))}`),
       source: "championship",
     })),
   ]
