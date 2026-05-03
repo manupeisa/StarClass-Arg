@@ -6,9 +6,9 @@ export const metadata = {
   title: "StarClass Argentina",
   description: "Calendario, resultados, rankings y comunidad argentina de la Clase Star.",
   icons: {
-    icon: "/district-18-logo-final.png",
-    shortcut: "/district-18-logo-final.png",
-    apple: "/district-18-logo-final.png",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/apple-icon.png",
   },
 };
 
@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <head>
-        <link rel="icon" href="/district-18-logo-final.png" />
+        <link rel="icon" href="/icon.png" />
       </head>
       <body>
         {children}
