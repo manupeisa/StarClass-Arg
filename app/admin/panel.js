@@ -372,6 +372,37 @@ export default function AdminPanel({ initialData }) {
     }));
   }
 
+  function patchSocial(patch) {
+    setData((current) => ({
+      ...current,
+      social: {
+        ...(current.social || {}),
+        ...(patch || {}),
+      },
+    }));
+  }
+
+  function addSocialItem() {
+    const current = data.social || {};
+    const instagram = Array.isArray(current.instagram) ? current.instagram : current.instagram ? [current.instagram] : [];
+    const next = [...instagram, { label: "@nueva", url: "https://" }];
+    patchSocial({ instagram: next });
+  }
+
+  function updateSocialItem(index, patch) {
+    const current = data.social || {};
+    const instagram = Array.isArray(current.instagram) ? current.instagram : current.instagram ? [current.instagram] : [];
+    const next = instagram.map((it, i) => (i === index ? { ...it, ...patch } : it));
+    patchSocial({ instagram: next });
+  }
+
+  function removeSocialItem(index) {
+    const current = data.social || {};
+    const instagram = Array.isArray(current.instagram) ? current.instagram : current.instagram ? [current.instagram] : [];
+    const next = instagram.filter((_, i) => i !== index);
+    patchSocial({ instagram: next });
+  }
+
   async function uploadSudamericanoImage(file, field) {
     if (!file) return;
 
@@ -858,6 +889,37 @@ export default function AdminPanel({ initialData }) {
             Texto de copyright
             <input value={data.copyright || ''} onChange={(event) => patchData({ copyright: event.target.value })} />
           </label>
+          <div className="admin-section-title compact">
+            <div>
+              <span>Redes</span>
+              <h3>Instagram</h3>
+            </div>
+          </div>
+          <p className="admin-help">Editá los links de Instagram que se muestran en el sitio.</p>
+          <div className="form-grid">
+            {(Array.isArray(data.social?.instagram) ? data.social.instagram : data.social?.instagram ? [data.social.instagram] : []).map((item, idx) => (
+              <div key={`social-${idx}`} className="social-row">
+                <label>
+                  Etiqueta
+                  <input value={item?.label || ''} onChange={(e) => updateSocialItem(idx, { label: e.target.value })} />
+                </label>
+                <label>
+                  URL
+                  <input value={item?.url || ''} onChange={(e) => updateSocialItem(idx, { url: e.target.value })} />
+                </label>
+                <button type="button" className="danger" onClick={() => removeSocialItem(idx)}>
+                  <Trash2 size={14} />
+                  Borrar
+                </button>
+              </div>
+            ))}
+            <div>
+              <button type="button" onClick={addSocialItem}>
+                <Plus size={16} />
+                Agregar Instagram
+              </button>
+            </div>
+          </div>
         </section>
 
         <section className={activeAdminSection === "hero" ? "admin-section admin-section-active" : "admin-section admin-section-hidden"} id="hero">

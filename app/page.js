@@ -237,7 +237,11 @@ export default async function Home() {
               <CalendarDays size={18} />
               Ver calendario
             </a>
-            <a className="button ghost" href={data.social.instagram.url} target="_blank">
+            <a
+              className="button ghost"
+              href={(Array.isArray(data.social?.instagram) ? data.social.instagram[0]?.url : data.social?.instagram?.url) || "#"}
+              target="_blank"
+            >
               <Instagram size={18} />
               Instagram
             </a>
@@ -348,11 +352,20 @@ export default async function Home() {
           <Anchor size={26} />
           <h2>Comunidad y redes</h2>
           <p>Links oficiales para difundir regatas, fotos y novedades.</p>
-          <a href={data.social.instagram.url} target="_blank">
-            <Instagram size={18} />
-            {data.social.instagram.label}
-            <ExternalLink size={16} />
-          </a>
+          {
+            // support both single object and array for backwards compatibility
+          }
+          {(() => {
+            const inst = data?.social?.instagram;
+            const list = Array.isArray(inst) ? inst : inst ? [inst] : [];
+            return list.map((item, idx) => (
+              <a key={`ig-${idx}`} href={item.url} target="_blank" rel="noopener noreferrer">
+                <Instagram size={18} />
+                {item.label}
+                <ExternalLink size={16} />
+              </a>
+            ));
+          })()}
         </aside>
       </section>
     </main>
