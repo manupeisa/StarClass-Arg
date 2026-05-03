@@ -23,6 +23,13 @@ const pageNavItems = [
   { label: "Comunidad", href: "/#comunidad" },
 ];
 
+const ycaLocationUrl = "https://yca.org.ar/event-location/sede-darsena-norte/";
+const ycaBuildingSource =
+  "https://commons.wikimedia.org/wiki/File:Predio_del_Yacht_Club_de_Buenos_Aires,_Edificio_del_Yacht_Club.jpg";
+const ycaBuildingLicense = "https://creativecommons.org/licenses/by-sa/3.0/";
+const ycaBuildingImage = "/yca-darsena-norte.jpg";
+const boatsImage = "/uploads/flo-8042-copia-1777585686571.jpg";
+
 const dateFormatter = new Intl.DateTimeFormat("es-AR", {
   day: "2-digit",
   month: "long",
@@ -67,7 +74,6 @@ export default async function SudamericanoPage() {
     end: "2026-12-08",
   };
   const heroImage = data.hero?.images?.[0] || data.gallery?.[0]?.image || "/uploads/flo-7643-copia-1777585679723.jpg";
-  const secondaryImage = data.gallery?.[1]?.image || data.gallery?.[0]?.image || heroImage;
 
   return (
     <main>
@@ -85,7 +91,7 @@ export default async function SudamericanoPage() {
         </div>
         <div className="sudamericano-hero-content">
           <p className="kicker">Campeonato Sudamericano de StarClass</p>
-          <h1>La flota sudamericana se encuentra en Buenos Aires.</h1>
+          <h1>Un nuevo evento de la clase con todos los condimentos que ofrece Buenos Aires.</h1>
           <p>
             Cuatro dias para reunir talento, tradicion y competencia de alto nivel en la clase Star.
             La cuenta regresiva ya empezo.
@@ -105,7 +111,12 @@ export default async function SudamericanoPage() {
           <Trophy size={28} />
           <span>{event.title}</span>
           <strong>{formatDateRange(event.start, event.end)}</strong>
-          <p><MapPin size={18} /> {event.location || event.club}</p>
+          <p>
+            <a href={ycaLocationUrl} target="_blank" rel="noopener noreferrer">
+              <MapPin size={18} />
+              {event.location || event.club}
+            </a>
+          </p>
         </aside>
       </section>
 
@@ -137,6 +148,33 @@ export default async function SudamericanoPage() {
         </div>
       </section>
 
+      <section className="section sudamericano-venue">
+        <figure className="sudamericano-venue-media">
+          <img src={ycaBuildingImage} alt="Edificio del Yacht Club Argentino en Darsena Norte" />
+          <figcaption>
+            Foto: Jrivell,{" "}
+            <a href={ycaBuildingSource} target="_blank" rel="noopener noreferrer">
+              Wikimedia Commons
+            </a>{" "}
+            <a href={ycaBuildingLicense} target="_blank" rel="noopener noreferrer">
+              CC BY-SA 3.0
+            </a>
+          </figcaption>
+        </figure>
+        <div className="sudamericano-venue-copy">
+          <p className="kicker">Sede</p>
+          <h2>YCA Darsena Norte como punto de encuentro.</h2>
+          <p>
+            La sede historica del Yacht Club Argentino suma identidad portuaria, cercania con la
+            ciudad y una base ideal para recibir a las tripulaciones del Sudamericano.
+          </p>
+          <a className="button ghost" href={ycaLocationUrl} target="_blank" rel="noopener noreferrer">
+            <Anchor size={18} />
+            Ver sede del club
+          </a>
+        </div>
+      </section>
+
       <section className="section sudamericano-split">
         <div className="sudamericano-copy">
           <p className="kicker">Expectativa</p>
@@ -149,11 +187,14 @@ export default async function SudamericanoPage() {
           <div className="sudamericano-badges">
             <span><Waves size={16} /> Rio de la Plata</span>
             <span><Clock size={16} /> Diciembre 2026</span>
-            <span><Anchor size={16} /> YCA Darsena</span>
+            <a href={ycaLocationUrl} target="_blank" rel="noopener noreferrer">
+              <Anchor size={16} />
+              YCA Darsena
+            </a>
           </div>
         </div>
         <figure className="sudamericano-image">
-          <img src={secondaryImage} alt="Flota StarClass Argentina" />
+          <img src={boatsImage} alt="Barco Star navegando en el agua" />
         </figure>
       </section>
     </main>
