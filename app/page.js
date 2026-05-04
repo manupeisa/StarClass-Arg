@@ -123,12 +123,33 @@ function getEventTypeClass(type) {
   return "event-card-national";
 }
 
+function getEventButtons(event) {
+  const buttons = Array.isArray(event.buttons)
+    ? event.buttons
+        .map((button) => ({
+          label: String(button?.label || "").trim(),
+          url: String(button?.url || button?.href || "").trim(),
+        }))
+        .filter((button) => button.url)
+    : [];
+
+  if (!buttons.length && event.link) {
+    return [{ label: "Inscribirse", url: event.link }];
+  }
+
+  return buttons.map((button) => ({
+    ...button,
+    label: button.label || "Abrir link",
+  }));
+}
+
 function EventCard({ event }) {
-  const className = `event-card ${getEventTypeClass(event.type)}${event.link ? " event-card-link" : ""}`;
-  const hasLink = Boolean(event.link);
+  const buttons = getEventButtons(event);
+  const className = `event-card ${getEventTypeClass(event.type)}${buttons.length ? " event-card-link" : ""}`;
   const hasMediaImage = Boolean(event.mediaImage);
-  const content = (
-    <>
+
+  return (
+    <article className={className}>
       <div className={hasMediaImage ? "event-date event-date-media" : "event-date"}>
         {hasMediaImage ? (
           <img src={event.mediaImage} alt="" />
@@ -144,24 +165,23 @@ function EventCard({ event }) {
         <h3>{event.title}</h3>
         <span>{event.club}{" · "}{event.location}</span>
         {hasMediaImage ? <strong className="event-range-inline">{formatDateRange(event.start, event.end)}</strong> : null}
-        {hasLink ? <span className="button ghost event-register-link">Inscribirse</span> : null}
+        {buttons.length ? (
+          <div className="event-card-actions">
+            {buttons.map((button, buttonIndex) => (
+              <a
+                className="button ghost event-register-link"
+                href={button.url}
+                key={`${button.label}-${buttonIndex}`}
+                target={isExternalLink(button.url) ? "_blank" : undefined}
+                rel={isExternalLink(button.url) ? "noopener noreferrer" : undefined}
+              >
+                {button.label}
+              </a>
+            ))}
+          </div>
+        ) : null}
       </div>
-    </>
-  );
-
-  if (!event.link) {
-    return <article className={className}>{content}</article>;
-  }
-
-  return (
-    <a
-      className={className}
-      href={event.link}
-      target={isExternalLink(event.link) ? "_blank" : undefined}
-      rel={isExternalLink(event.link) ? "noopener noreferrer" : undefined}
-    >
-      {content}
-    </a>
+    </article>
   );
 }
 
@@ -197,6 +217,7 @@ export default async function Home() {
       raceDates: championship.raceDates,
       mediaImage: championship.name?.toLowerCase().includes("sudamericano") ? "/uploads/flo-8049-copia-1777586506711.jpg" : "",
       link: championship.link || (championship.name && championship.name.toLowerCase().includes("sudamericano") ? "/sudamericano" : `/campeonatos/${championshipSlug(championship, sortedChampionships.indexOf(championship))}`),
+      buttons: championship.buttons,
       source: "championship",
     })),
   ]

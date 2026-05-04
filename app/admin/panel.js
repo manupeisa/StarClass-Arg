@@ -112,7 +112,27 @@ function emptyEvent() {
     start: "",
     end: "",
     link: "",
+    buttons: [],
   };
+}
+
+function emptyEventButton() {
+  return { label: "Inscribirse", url: "" };
+}
+
+function normalizeEventButtons(event) {
+  const buttons = Array.isArray(event?.buttons)
+    ? event.buttons.map((button) => ({
+        label: button?.label || "",
+        url: button?.url || button?.href || "",
+      }))
+    : [];
+
+  if (!buttons.length && event?.link) {
+    return [{ label: "Inscribirse", url: event.link }];
+  }
+
+  return buttons;
 }
 
 function emptyChampionship() {
@@ -351,6 +371,13 @@ export default function AdminPanel({ initialData }) {
     setData((current) => ({ ...current, ...patch }));
   }
 
+  function patchEvent(index, patch) {
+    setData((current) => ({
+      ...current,
+      events: updateArrayItem(current.events, index, patch),
+    }));
+  }
+
   function patchChampionship(patch) {
     setData((current) => ({
       ...current,
@@ -435,6 +462,26 @@ export default function AdminPanel({ initialData }) {
       console.error("Upload sudamericano image error:", err);
       setMessage(`Error al subir imagen del Sudamericano: ${err.message}`);
     }
+  }
+
+  function patchEventButton(eventIndex, buttonIndex, patch) {
+    const event = data.events[eventIndex];
+    const buttons = updateArrayItem(normalizeEventButtons(event), buttonIndex, patch);
+    patchEvent(eventIndex, { buttons, link: "" });
+  }
+
+  function addEventButton(eventIndex) {
+    const event = data.events[eventIndex];
+    patchEvent(eventIndex, {
+      buttons: [...normalizeEventButtons(event), emptyEventButton()],
+      link: "",
+    });
+  }
+
+  function removeEventButton(eventIndex, buttonIndex) {
+    const event = data.events[eventIndex];
+    const buttons = normalizeEventButtons(event).filter((_, index) => index !== buttonIndex);
+    patchEvent(eventIndex, { buttons, link: "" });
   }
 
   async function uploadHeroImage(file) {
@@ -1615,25 +1662,68 @@ export default function AdminPanel({ initialData }) {
             </button>
           </div>
           <div className="event-admin-list">
-            {data.events.map((event, index) => (
-              <div className="form-grid event-edit" key={index}>
-                <input value={event.title} onChange={(e) => patchData({ events: updateArrayItem(data.events, index, { title: e.target.value }) })} />
-                <input value={event.type} onChange={(e) => patchData({ events: updateArrayItem(data.events, index, { type: e.target.value }) })} />
-                <input value={event.club} onChange={(e) => patchData({ events: updateArrayItem(data.events, index, { club: e.target.value }) })} />
-                <input value={event.location} onChange={(e) => patchData({ events: updateArrayItem(data.events, index, { location: e.target.value }) })} />
-                <input type="date" value={event.start} onChange={(e) => patchData({ events: updateArrayItem(data.events, index, { start: e.target.value }) })} />
-                <input type="date" value={event.end} onChange={(e) => patchData({ events: updateArrayItem(data.events, index, { end: e.target.value }) })} />
-                <input value={event.link || ""} placeholder="Link" onChange={(e) => patchData({ events: updateArrayItem(data.events, index, { link: e.target.value }) })} />
-                <button
-                  className="danger"
-                  type="button"
-                  onClick={() => patchData({ events: data.events.filter((_, eventIndex) => eventIndex !== index) })}
-                >
-                  <Trash2 size={16} />
-                  Eliminar
-                </button>
-              </div>
-            ))}
+            {data.events.map((event, index) => {
+              const buttons = normalizeEventButtons(event);
+
+              return (
+                <div className="event-edit" key={index}>
+                  <div className="event-edit-fields">
+                    <input value={event.title} onChange={(e) => patchEvent(index, { title: e.target.value })} />
+                    <input value={event.type} onChange={(e) => patchEvent(index, { type: e.target.value })} />
+                    <input value={event.club} onChange={(e) => patchEvent(index, { club: e.target.value })} />
+                    <input value={event.location} onChange={(e) => patchEvent(index, { location: e.target.value })} />
+                    <input type="date" value={event.start} onChange={(e) => patchEvent(index, { start: e.target.value })} />
+                    <input type="date" value={event.end} onChange={(e) => patchEvent(index, { end: e.target.value })} />
+                    <button
+                      className="danger"
+                      type="button"
+                      onClick={() => patchData({ events: data.events.filter((_, eventIndex) => eventIndex !== index) })}
+                    >
+                      <Trash2 size={16} />
+                      Eliminar
+                    </button>
+                  </div>
+
+                  <div className="event-buttons-editor">
+                    <div className="event-buttons-title">
+                      <strong>Botones</strong>
+                      <button type="button" onClick={() => addEventButton(index)}>
+                        <Plus size={16} />
+                        Agregar botón
+                      </button>
+                    </div>
+                    {buttons.length ? (
+                      <div className="event-button-list">
+                        {buttons.map((button, buttonIndex) => (
+                          <div className="event-button-row" key={buttonIndex}>
+                            <input
+                              value={button.label}
+                              placeholder="Texto del botón"
+                              onChange={(e) => patchEventButton(index, buttonIndex, { label: e.target.value })}
+                            />
+                            <input
+                              value={button.url}
+                              placeholder="https://... o /archivo.pdf"
+                              onChange={(e) => patchEventButton(index, buttonIndex, { url: e.target.value })}
+                            />
+                            <button
+                              className="icon-button"
+                              type="button"
+                              aria-label="Borrar botón"
+                              onClick={() => removeEventButton(index, buttonIndex)}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="admin-help">Sin botones cargados para esta competencia.</p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
       </section>

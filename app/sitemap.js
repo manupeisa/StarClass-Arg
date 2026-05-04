@@ -1,7 +1,7 @@
 import { readStarclassData } from "../lib/starclass-data";
 import { championshipSlug } from "../lib/slug";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://starclass.ar";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.starclass.ar";
 
 function toAbsoluteUrl(pathname) {
   return new URL(pathname, siteUrl).toString();
